@@ -1,0 +1,36 @@
+Package: provAnalyzeR
+Title: Finds Code Anomalies By Analyzing Provenance
+Version: 0.1
+Date: 2020-05-20
+Authors@R: c( person("Barbara", "Lerner", role = "cre",
+                      email = "blerner@mtholyoke.edu"),
+              person("Emery", "Boose", role = "aut",
+                      email = "boose@fas.harvard.edu")
+              person("Rose", "Sheehan", role = "aut",
+                      email = "sheeh22r@mtholyoke.edu")
+		    )
+Copyright: President and Fellows of Harvard College, Trustees of Mount Holyoke College
+Description: Reads the provenance collected by the 'rdt' or
+    'rdtLite' packages, or other tools providing compatible PROV JSON output
+    created by the execution of a script, and provides an analysis of coding 
+    anomalies based on the provenance.  The exact format of the JSON created by 
+    'rdt' and 'rdtLite' is described in 
+    <https://github.com/End-to-end-provenance/ExtendedProvJson>.  
+    More information about 'rdtLite' and associated tools is available 
+    at <https://github.com/End-to-end-provenance/> and Barbara Lerner, 
+    Emery Boose, and Luis Perez (2018), Using Introspection to Collect 
+    Provenance in R, Informatics, <doi: 10.3390/informatics5010012>.
+Depends: R (>= 3.5)
+License: GPL-3 | file LICENSE
+Encoding: UTF-8
+LazyData: true
+Imports: 
+    provParseR (>= 0.3)
+Suggests:
+    rdtLite,
+    rdt,
+    testthat
+Additional_repositories:  https://end-to-end-provenance.github.io/drat/
+URL: https://github.com/End-to-end-provenance
+BugReports: https://github.com/End-to-end-provenance/provAnalyzeR/issues
+RoxygenNote: 6.1.1

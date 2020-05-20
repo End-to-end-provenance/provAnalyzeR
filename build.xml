@@ -1,0 +1,123 @@
+<project
+	xmlns:if="ant:if"
+    xmlns:unless="ant:unless">
+    
+	<loadproperties srcFile="DESCRIPTION" />
+	<property name="tarfile" value="provAnalyzeR_${Version}.tar.gz" />
+
+ 	<target name="roxygenize">
+    	<exec executable="Rscript" >
+    		<arg line="-e roxygen2::roxygenise()"/>
+    	</exec>
+	</target>
+ 		
+    <target name="build" depends="roxygenize">
+    	<exec executable="R" >
+    		<arg line="CMD build --no-build-vignettes ."/>
+    	</exec>
+    </target>
+
+	<target name="check" depends="build">
+		<exec executable="R" >
+  			<arg line="CMD check --no-vignettes --no-build-vignettes ${tarfile}"/>
+	   	</exec>
+    </target>
+
+    <target name="install" depends="check">
+        <exec executable="R" >
+  			<arg line="CMD INSTALL ${tarfile}"/>
+		</exec>
+    </target>
+    
+    <target name="install-no-check" depends="build">
+        <exec executable="R" >
+  			<arg line="CMD INSTALL ${tarfile}"/>
+		</exec>
+    </target>
+    
+	<target name="create-json">
+		<!-- Note that script2.r and warnings.r do not need to be here.  script2.r is sourced by
+		     another script but never run independently. warnings.r is tested with prov.analyze.run
+		     so we do not want precomputed provenance. -->
+		<antcall target="create-one-json">
+			<param name="script" value="console"/>
+		</antcall>
+		<antcall target="create-one-json">
+			<param name="script" value="files"/>
+		</antcall>
+		<antcall target="create-one-json">
+			<param name="script" value="prov"/>
+		</antcall>
+		<!--<antcall target="create-one-json">
+			<param name="script" value="warnings"/>
+		</antcall>-->
+	</target>
+	
+	<target name="create-one-json">
+		<antcall target="json">
+			<param name="theFile" value="${script}.R"/>
+		</antcall>
+		<antcall target="analyze">
+			<param name="theFile" value="${script}.json"/>
+		</antcall>
+	</target>	
+	<target name="analyze">
+		<basename property="scriptname" file="${theFile}" suffix="json" />
+		<exec executable="Rscript" dir="inst/testdata" output="${scriptname}.analysis">
+			<arg line="-e &quot;provAnalyzeR::prov.analyze.file('${theFile}')&quot;" />
+		</exec>
+		<echo> Comparing analyses </echo>
+		<exec executable="diff">
+			<arg value="--strip-trailing-cr"/>
+			<arg file="inst/testanalyses/${scriptname}.expected"/>
+			<arg file="${scriptname}.analysis"/>
+		</exec>
+		<input
+			message="Do you want to update the expected analysis for ${scriptname}?"
+			validargs="y,n"
+			addproperty="answer"
+		/>
+		<condition property="do.update">
+			<equals arg1="y" arg2="${answer}"/>
+		</condition>
+		<antcall target="update-analysis">
+			<param name="script" value="${scriptname}"/>
+		</antcall>
+		<antcall target="delete-analysis">
+			<param name="script" value="${scriptname}"/>
+		</antcall>
+	</target>
+	
+	<target name="update-analysis" if="do.update">
+		<echo> Updating the analysis </echo>
+		<move file="${script}.analysis" tofile="inst/testanalyses/${script}.expected" />
+	</target>
+	
+	<target name="delete-analysis" unless="do.update">
+		<echo> Deleting the new analysis </echo>
+        <delete file="${script}.analysis"/>
+	</target>
+	
+	<target name="json">
+		<echo message="${theFile}"/>
+		<exec executable="Rscript" dir="inst/testscripts">
+			<arg line="-e &quot;rdtLite::prov.run('${theFile}', prov.dir='.', snapshot=10)&quot;"/>
+		</exec>
+		<basename property="scriptname" file="${theFile}" suffix="R" />
+		<move file="inst/testscripts/prov_${scriptname}/prov.json" tofile="inst/testdata/${scriptname}.json" />
+		<delete dir="inst/testscripts/prov_${scriptname}" />
+	</target>
+
+    <target name="cran-check" depends="build, create-json">
+    	<exec executable="R" >
+    		<arg line="CMD check --as-cran --no-vignettes --no-build-vignettes ${tarfile}"/>
+    	</exec>
+    </target>
+
+    <target name="clean">
+        <delete dir="provAnalyzeR.Rcheck" verbose="false"/>
+        <delete file="${tarfile}" verbose="false"/>
+    </target>
+
+	
+</project>
