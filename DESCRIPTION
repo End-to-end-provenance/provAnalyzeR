@@ -30,7 +30,7 @@ Suggests:
     rdtLite,
     rdt,
     testthat
-Additional_repositories:  https://end-to-end-provenance.github.io/drat/
+Additional_repositories: https://end-to-end-provenance.github.io/drat/
 URL: https://github.com/End-to-end-provenance
 BugReports: https://github.com/End-to-end-provenance/provAnalyzeR/issues
-RoxygenNote: 6.1.1
+RoxygenNote: 7.1.0

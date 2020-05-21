@@ -1,9 +1,12 @@
-library(utils)	
+# before prov collection starts
+a <- 1
+b <- 5
+cc <- 7
 
-input <- readLines ("in.txt")	
-print ("foo")
-print (input)
+# start prov collection: use a, b, but not cc
+library(rdtLite)
+prov.init(prov.dir = "testdata", snapshot.size="10")
 
-hi <- hi + 1
+prov.source("testscripts/source_fromEnv.R")
 
-source ("script2.r")
+prov.quit()
