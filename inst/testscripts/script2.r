@@ -1,1 +1,0 @@
-writeLines (input, "out.txt")

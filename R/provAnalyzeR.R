@@ -17,6 +17,80 @@
 
 ###############################################################################
 
+#' Provenance analysis functions
+#' 
+#' prov.analyze uses the provenance from the last execution of prov.run and outputs
+#' a text analysis to the R console based on dynamic analysis.
+#' 
+#' These functions use provenance collected using the rdtLite or rdt packages.
+#' 
+#' For provenance collected from executing a script file, the analysis identifies:
+#' \itemize{
+#'   \item The name of the script file executed
+#'   \item The names of any variables used but not set in the current session
+#'   \item Any variables assigned to reserved values c, t, T, or F
+#'   \item Any variable type changes that occurred
+#'   \item Any functions that were defined multiple times
+#' }
+#' 
+#' Creating a zip file depends on a zip executable being on the search path.
+#' By default, it looks for a program named zip.  To use a program with 
+#' a different name, set the value of the R_ZIPCMD environment variable.  This
+#' code has been tested with Unix zip and with 7-zip on Windows.  
+#'
+#' @param save if true saves the analysis to the file prov-analyze.txt in the 
+#' provenance directory
+#' @param create.zip if true all of the provenance data will be packaged up
+#'   into a zip file stored in the current working directory.
+#' 
+#' @export
+#' @examples 
+#' \dontrun{prov.analyze ()}
+#' @rdname analyze
+prov.analyze <- function (save=FALSE, create.zip=FALSE) 
+{
+  # clear environment first
+  .clear()
+  
+  # Determine which provenance collector to use
+  tool <- get.tool()
+  if (tool == "rdtLite") {
+    prov.json <- rdtLite::prov.json
+  } else {
+    prov.json <- rdt::prov.json
+  }
+  
+  # initialise environment
+  .analyze.init(prov.json(), is.file = FALSE)
+  
+  # create the analysis summary
+  analyze.prov.summary (save, create.zip)
+}
+
+#' prov.analyze.file
+#' 
+#' prov.analyze.file reads a JSON file that contains provenance and outputs
+#' a text analysis to the R console based on dynamic analysis.
+#' 
+#' @param prov.file the path to the file containing provenance
+#'
+#' @export
+#' @examples 
+#' \dontrun{
+#' testdata <- system.file("testdata", "prov.json", package = "provAnalyzeR")
+#' prov.analyze.file(testdata)}
+#' @rdname analyze
+prov.analyze.file <- function(prov.file, save=FALSE, create.zip=FALSE)
+{
+  # clear environment first
+  .clear()
+  
+  # # initialise environment
+  .analyze.init(prov.file, is.file = TRUE)
+  
+  # create the analysis summary
+  analyze.prov.summary (save, create.zip)
+}
 
 #' prov.analyze.run
 #'
@@ -26,13 +100,17 @@
 #' @param r.script the name of a file containing an R script
 #' @param ... extra parameters are passed to the provenance collector.  See rdt's prov.run function
 #'    or rdtLites's prov.run function for details.
-
+#'    
 #' @export 
 #' @examples 
 #' \dontrun{
-#' ADD EXAMPLE}
-#' @rdname summarize
+#' testdata <- system.file("testscripts", "console.R", package = "provAnalzeR")
+#' prov.analyze.run (testdata)}
+#' @rdname analyze
 prov.analyze.run <- function(r.script, save=FALSE, create.zip=FALSE, ...) {
+  # clear environment first
+  .clear()
+  
   # Determine which provenance collector to use
   tool <- get.tool()
   if (tool == "rdtLite") {
@@ -43,12 +121,14 @@ prov.analyze.run <- function(r.script, save=FALSE, create.zip=FALSE, ...) {
     prov.json <- rdt:: prov.json
   }
   
-  # Run the script, collecting provenance, if a script was provided.
+  # run the script
   tryCatch (prov.run(r.script, ...), error = function(x) {print (x)})
   
+  # initialise environment
+  .analyze.init(prov.json(), is.file = FALSE)
+  
   # Create the provenance summary
-  prov <- provParseR::prov.parse(prov.json(), isFile=FALSE)
-  analyze.prov.summary (prov, save, create.zip)
+  analyze.prov.summary (save, create.zip)
 }
 
 #' analyze.prov.summary summarizes course-grained coding anomolies found in the provenance.
@@ -59,48 +139,54 @@ prov.analyze.run <- function(r.script, save=FALSE, create.zip=FALSE, ...) {
 #' @param create.zip if true all of the provenance data will be packaged up
 #'   into a zip file stored in the current working directory.
 #' @noRd
-analyze.prov.summary <- function (prov, save, create.zip) {
-  environment <- provParseR::get.environment(prov)
+analyze.prov.summary <- function (save, create.zip) {
+  environment <- provParseR::get.environment(.analyze.env$prov)
   
   if (save) {
-    save.to.text.file(prov, environment)
+    save.to.text.file(environment)
   }
   else {
-    generate.summaries(prov, environment)
+    generate.summaries(environment)
   }
   
   if (create.zip) {
     save.to.zip.file (environment)
   }
-  
 }
 
 #' generate.summaries creates the text summary, writing it to the
 #' current output sink(s)
-#' @param prov the parsed provenance
+#' 
 #' @param environment the environemnt data frame extracted from the provenance
 #' @noRd
-generate.summaries <- function(prov, environment) {
+generate.summaries <- function(environment) {
+  # get file name
   script.path <- environment[environment$label == "script", ]$value
   script.file <- sub(".*/", "", script.path)
   
   if (script.file != "") {
-    cat (paste ("POTENTIAL ANOMOLIES DETECTED for", script.file, "\n\n"))
+    cat (paste ("POTENTIAL ANOMALIES DETECTED for", script.file, "\n\n"))
   } else {
     # NOT CURRENTLY IMPLEMENTED
-    cat (paste ("POTENTIAL ANOMOLIES DETECTED for Console Session\n\n"))
+    cat (paste ("POTENTIAL ANOMALIES DETECTED for Console Session\n\n"))
   }
   
-  generate.preexisting.summary(provParseR::get.preexisting(prov))
-  
+  # dynamic anlaysis summaries
+  generate.preexisting.summary(provParseR::get.preexisting(.analyze.env$prov)) 
+  generate.invalid.names.summary()
+  generate.type.changes.summary()
+  generate.function.reassignments.summary()
 }
 
 #' generate.preexisting.summary lists variables in the global environment that are 
 #' used but not set by a script or a console session.
+#' 
 #' @param vars a data frame of preexisting variables
+#' 
 #' @noRd
 generate.preexisting.summary <- function(vars) {
   cat (paste ("PRE-EXISTING:\n"))
+  
   if (is.null(vars) || nrow(vars) == 0) {
     cat("None\n")
   } else {
@@ -111,96 +197,64 @@ generate.preexisting.summary <- function(vars) {
   cat("\n")
 }
 
-#' get.tool determines whether to use rdt or rdtLite to get the provenance
+#' generate.invalid.names.summary lists variables that use the 
+#' name of a predefined entity but will not cause an R error.
+#' Currently checked for: c, t, T, F
 #' 
-#' If rdtLite is loaded, "rdtLite" is returned.  If rdtLite is not loaded, but rdt
-#' is, "rdt" is returned.  If neither is loaded, it then checks to see if either
-#' is installed, favoring "rdtLite" over "rdt".
-#' 
-#' Stops if neither rdt or rdtLite is available.
-#' 
-#' @return "rdtLite" or "rdt"
-#' @noRd 
-get.tool <- function () {
-  # Determine which provenance collector to use
-  loaded <- loadedNamespaces()
-  if ("rdtLite" %in% loaded) {
-    return("rdtLite")
-  } 
-  if ("rdt" %in% loaded) {
-    return("rdt")
-  } 
-  
-  installed <- utils::installed.packages ()
-  if ("rdtLite" %in% installed) {
-    return("rdtLite")
-  } 
-  if ("rdt" %in% installed) {
-    return("rdt")
-  }
-  
-  stop ("One of rdtLite or rdt must be installed.")
-}
-
-#' save.to.text.file saves the summary to a text file
-#' @param prov the parsed provenance
-#' @param environment a data frame containing the environment information
-#' @noRd 
-save.to.text.file <- function(prov, environment) {
-  prov.path <- environment[environment$label == "provDirectory", ]$value
-  prov.file <- paste(prov.path, "/prov-summary.txt", sep="")
-  sink(prov.file, split=TRUE)
-  generate.summaries(prov, environment)
-  sink()
-  cat(paste("Saving provenance summmary in", prov.file))
-}
-
-#' save.to.zip.file creates a zip file of the provenance directory
-#' @param environment the environemnt data frame extracted from the provenance
 #' @noRd
-save.to.zip.file <- function (environment) {
-  # Determine where the provenance is 
-  cur.dir <- getwd()
-  prov.path <- environment[environment$label == "provDirectory", ]$value
-  setwd(prov.path)
+generate.invalid.names.summary <- function() {
+  cat (paste ("INVALID NAMES:\n"))
   
-  # Determine the name for the zip file
-  prov.dir <- sub (".*/", "", prov.path)
-  zipfile <- paste0 (prov.dir, "_", 
-                     environment[environment$label == "provTimestamp", ]$value, ".zip")
-  zippath <- paste0 (cur.dir, "/", zipfile)
+  # get all invalid names
+  invalid.names <- analyze.invalid.names()
   
-  if (file.exists (zippath)) {
-    warning (zippath, " already exists.")
-  }
+  if (is.double(invalid.names) && invalid.names == 0) 
+    cat("None\n")
+  else if(!is.null(invalid.names))
+    print(invalid.names)
   
-  else {
-    # Zip it up
-    zip.program <- Sys.getenv("R_ZIPCMD", "zip")
-    if (.Platform$OS.type == "windows" && endsWith (zip.program, "7z.exe")) {
-      # 7z.exe a prov.zip . -r -x!debug 
-      zip.result <- utils::zip (zippath, ".", flags="a", extras="-r -x!debug")
-    }
-    else {
-      # zip -r prov.zip . -x debug/ 
-      zip.result <- utils::zip (zippath, ".", flags="-r", extras="-x debug/")
-    }
-    
-    # Check for errors
-    if (zip.result == 0) {
-      cat (paste ("Provenance saved in", zipfile))
-    }
-    else if (zip.result == 127) {
-      warning ("Unable to create a zip file.  Please check that you have a zip program, such as 7-zip, on your path, and have the R_ZIPCMD environment variable set.")
-    }
-    else if (zip.result == 124) {
-      warning ("Unable to create a zip file.  The zip program timed out.")
-    }
-    else {
-      warning ("Unable to create a zip file.  The zip program ", zip.program, " returned error ", zip.result)
-    }
-  }
+  cat("\n")
+}
+
+#' generate.type.changes.summary lists variables in the global environment that 
+#' undergo one or more type changes
+#' 
+#' @param var Optional. Variable name(s) to be queried. If not NA, the results will
+#'            be filtered to show only those with the given variable name.
+#' 
+#' @noRd
+generate.type.changes.summary <- function(var = NA) {
+  cat (paste ("TYPE CHANGES:\n"))
   
-  # Return to the directory where the user executed the command from.
-  setwd(cur.dir)
+  # get all variables with type changes
+  type.changes <- analyze.type.changes(var)
+  
+  if (is.double(type.changes) && type.changes == 0) 
+    cat("None\n")
+  else if(!is.null(type.changes))
+    print(type.changes)
+  
+  cat("\n")
+  
+}
+
+#' generate.function.reassignments.summary lists function variables in the global
+#' environment that are bound to multiple functions throughout the script.
+#' 
+#' @param var Optional. Variable name(s) to be queried. If not NA, the results will
+#'            be filtered to show only those with the given variable name.
+#' 
+#' @noRd
+generate.function.reassignments.summary <- function(var = NA) {
+  cat (paste ("FUNCTION REASSIGNMENTS:\n"))
+  
+  # get all function variables that are reassigned
+  function.reassignments <- analyze.function.reassignments(var)
+  
+  if (is.double(function.reassignments) && function.reassignments == 0) 
+    cat("None\n")
+  else if(!is.null(function.reassignments))
+    print(function.reassignments)
+  
+  cat("\n")
 }

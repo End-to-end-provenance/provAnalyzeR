@@ -1,0 +1,15 @@
+POTENTIAL ANOMALIES DETECTED for Console Session
+
+PRE-EXISTING:
+a 
+b 
+
+TYPE CHANGES:
+None
+
+FUNCTION REASSIGNMENTS:
+None
+
+Warning message:
+Unable to access the following files:
+/Users/rosesheehan/Desktop/CompSci/provSummer/provAnalyzeR/inst/testdata/prov_console/scripts/ 

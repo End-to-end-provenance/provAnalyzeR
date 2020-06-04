@@ -35,23 +35,54 @@
 		</exec>
     </target>
     
+  <!-- === CREATE JSON =================================================== -->
+	
+	<!-- 
+		Creates up-to-date json files for testing.
+		Does not include sourced files.
+	-->
 	<target name="create-json">
-		<!-- Note that script2.r and warnings.r do not need to be here.  script2.r is sourced by
-		     another script but never run independently. warnings.r is tested with prov.analyze.run
-		     so we do not want precomputed provenance. -->
+	  <!-- empty -->
 		<antcall target="create-one-json">
-			<param name="script" value="console"/>
+			<param name="script" value="empty"/>
 		</antcall>
+		
+		<!-- no data nodes -->
 		<antcall target="create-one-json">
-			<param name="script" value="files"/>
+			<param name="script" value="noDataNodes"/>
 		</antcall>
+		
+		<!-- no variables -->
 		<antcall target="create-one-json">
-			<param name="script" value="prov"/>
+			<param name="script" value="noVars"/>
 		</antcall>
+		
+		<!-- exceptions -->
+		<antcall target="create-one-json">
+			<param name="script" value="exceptions"/>
+		</antcall>
+		
+		<!-- type changes -->
+		<antcall target="create-one-json">
+			<param name="script" value="typeChanges"/>
+		</antcall>
+		
+		<!-- function reassignment -->
+    <antcall target="create-one-json">
+      <param name="script" value="functionReassignments"/>
+    </antcall>
+    
+    <!-- invalid variable names -->
+    <antcall target="create-one-json">
+      <param name="script" value="invalidNames"/>
+    </antcall>
+		
+		<!-- preexisting variables -->
 		<antcall target="create-one-json">
       <param name="script" value="preexisting"/>
       <param name="console.mode" value="true"/>
     </antcall>
+    
 		<!--<antcall target="create-one-json">
 			<param name="script" value="warnings"/>
 		</antcall>-->
@@ -65,6 +96,7 @@
 			<param name="theFile" value="${script}.json"/>
 		</antcall>
 	</target>	
+	
 	<target name="analyze">
 		<basename property="scriptname" file="${theFile}" suffix="json" />
 		<exec executable="Rscript" dir="inst/testdata" output="${scriptname}.analysis">
@@ -103,28 +135,64 @@
 	</target>
 	
 	<target name="json">
+	  <!-- default: values of parameters to prov.run -->
+		<condition property="snapshot.size" value='0'>
+			<not><isset property="snapshot.size"/></not>
+		</condition>
+		
+		<!-- default: delete prov folder after it is created -->
+		<condition property="delete.dir" value="true">
+			<not><isset property="delete.dir"/></not>
+		</condition>
+		
+		<!-- default: console mode is false -->
+		<condition property="console.mode" value="false">
+			<not><isset property="console.mode"/></not>
+		</condition>
+	  
+	  <!-- run script -->
 		<echo message="${theFile}"/>
 		<exec if:true="${console.mode}" executable="Rscript" dir="inst">
       <arg line="testscripts/${theFile}"/>
     </exec>
     <exec unless:true="${console.mode}" executable="Rscript" dir="inst">
-        <arg line="-e &quot;rdtLite::prov.run('testscripts/${theFile}', prov.dir='testdata')&quot;"/>
+        <arg line="-e &quot;rdtLite::prov.run('testscripts/${theFile}', prov.dir='testdata', snapshot.size=${snapshot.size})&quot;"/>
     </exec>
 		<basename property="scriptname" file="${theFile}" suffix="R" />
-		<move file="inst/testscripts/prov_${scriptname}/prov.json" tofile="inst/testdata/${scriptname}.json" />
-		<delete dir="inst/testscripts/prov_${scriptname}" />
+		  <!-- move prov.json file to testdata folder -->
+    <move if:true="${console.mode}"
+      file="inst/testdata/prov_console/prov.json"
+      tofile="inst/testdata/${scriptname}.json"
+    />
+    <move unless:true="${console.mode}"
+      file="inst/testdata/prov_${scriptname}/prov.json"
+      tofile="inst/testdata/${scriptname}.json"
+    />
+
+    <!-- delete prov directory if it is not needed anymore -->
+    <antcall if:true="${delete.dir}" target="delete.prov.dir"/>
+	</target>
+	
+	<!-- delete prov directory -->
+	<target name="delete.prov.dir">
+		<delete if:true="${console.mode}" 
+				dir="inst/testdata/prov_console"
+		/>
+		<delete unless:true="${console.mode}" 
+				dir="inst/testdata/prov_${scriptname}"
+		/>
 	</target>
 
-    <target name="cran-check" depends="build, create-json">
-    	<exec executable="R" >
-    		<arg line="CMD check --as-cran --no-vignettes --no-build-vignettes ${tarfile}"/>
-    	</exec>
-    </target>
+  <target name="cran-check" depends="build, create-json">
+    <exec executable="R" >
+  		<arg line="CMD check --as-cran --no-vignettes --no-build-vignettes ${tarfile}"/>
+  	</exec>    
+  </target>
 
-    <target name="clean">
-        <delete dir="provAnalyzeR.Rcheck" verbose="false"/>
-        <delete file="${tarfile}" verbose="false"/>
-    </target>
+  <target name="clean">
+      <delete dir="provAnalyzeR.Rcheck" verbose="false"/>
+      <delete file="${tarfile}" verbose="false"/>
+  </target>
 
 	
 </project>

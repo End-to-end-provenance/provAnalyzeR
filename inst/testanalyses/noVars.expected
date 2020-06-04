@@ -1,0 +1,18 @@
+POTENTIAL ANOMALIES DETECTED for noVars.R 
+
+PRE-EXISTING:
+None
+
+run 6/3 3:08 pm
+There are no variables.
+INVALID NAMES:
+
+TYPE CHANGES:
+There are no variables.
+
+FUNCTION REASSIGNMENTS:
+There are no variables.
+
+Warning message:
+Unable to access the following files:
+/Users/rosesheehan/Desktop/CompSci/provSummer/provAnalyzeR/inst/testdata/prov_noVars/scripts/noVars.R 
