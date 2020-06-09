@@ -176,6 +176,7 @@ generate.summaries <- function(environment) {
   generate.invalid.names.summary()
   generate.type.changes.summary()
   generate.function.reassignments.summary()
+  generate.elapsed.time.summary()
 }
 
 #' generate.preexisting.summary lists variables in the global environment that are 
@@ -258,3 +259,9 @@ generate.function.reassignments.summary <- function(var = NA) {
   
   cat("\n")
 }
+
+
+generate.elapsed.time.summary() {
+  analyze.elapsed.time()
+}
+
