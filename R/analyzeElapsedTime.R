@@ -20,41 +20,6 @@
 # === ELAPSED TIMES =========================================================== #
 
 #' Tracking Execution Time
-#' 
-#' EDIT THIS
-#' Returns a data frame for each line in the execution containing the 
-#' instances where the data type changed.
-#' Each data frame contains the following columns:
-#' \itemize{
-#'		\item value: The value of the variable.
-#'		\item code: The line of code associated with the variable.
-#'		\item scriptNum: The script number associated with the variable.
-#'		\item startLine: The line number associated with the variable.
-#' }
-#'
-#' analyze.function.reassignments belongs to provAnalyzeR, an analyzer which utilises provenance 
-#' collected during-execution to perform dynamic analysis and identify coding anomalies.
-#'
-#' This function may be used independently after the analyzer has been initialised using
-#' one of its initialisation functions (listed below). Alternatively, it is run by the prov.analyze
-#' functions in order to summarize analysis.
-#'
-#' @param var Optional. Variable name(s) to be queried. If not NA, the results will
-#'            be filtered to show only those with the given variable name.
-#'
-#' @return A list of data frames for each variable with at least 2 function assignments.
-#'
-#' @seealso provAnalyzeR Initialisation Functions: 
-#' @seealso \code{\link{prov.analyze}}
-#' @seealso \code{\link{prov.analyze.file}} 
-#' @seealso \code{\link{prov.analyze.run}}
-#'
-#'
-#' @examples
-#' \dontrun{
-#' prov.analyze.run("test.R")
-#' analyze.function.reassignments()
-#' }
 #'
 #' @export
 #' @rdname analyze.elapsed.time
@@ -64,6 +29,11 @@ analyze.elapsed.time <- function()
   # get all elapsed times
   elapsed.nodes <- .analyze.env$proc.nodes[, c("startLine", "name", "elapsedTime")]
   
+  # remove nodes that do not have a start line
+  # particularly, this is used to remove nodes that store the name of the script
+  # at the beginning and end of activity
+  elapsed.nodes <- elapsed.nodes[!is.na(elapsed.nodes$startLine), ]
+
   # produce a bar chart of elapsed time results
   .get.output.elapsed.time(elapsed.nodes)
 }
@@ -72,6 +42,8 @@ analyze.elapsed.time <- function()
 #' columns: value, container, dimension, type, code, scriptNum, startLine
 #'
 #' @param elapsed.nodes The data nodes to be displayed to the user.
+#' @importFrom plotly plot_ly
+#' @importFrom graphics layout
 #'
 #' @return The data frame of type changes to be returned to the user.
 #'         columns: value, container, dimension, type, code, scriptNum, startLine
@@ -79,25 +51,30 @@ analyze.elapsed.time <- function()
 .get.output.elapsed.time <- function(elapsed.nodes)
 {
   # create bar chart
-  cat("bar plot 1\n\n")
-  barplot(t(as.matrix(elapsed.nodes)))
+  fig <- plotly::plot_ly(
+    data = elapsed.nodes,
+    x = ~elapsedTime,
+    y = ~startLine,
+    text = ~name,
+    color = I("light blue"),
+    type = "bar",
+    orientation = 'h'
+  )
   
-  cat("bar plot 2\n\n")
-  barplot(elapsed.nodes$elapsedTime,
-          main = "Elapsed Time by Line",
-          xlab = "Script Line",
-          ylab = "Time",
-          names.arg = elapsed.nodes$startLine,
-          col = "darkred",
-          horiz = TRUE)
+  # fig <- layout(
+  #   fig,
+  #   title = 'Elapsed Time by Line',
+    # xaxis = list(
+    #   type = 'category',
+    #   title = 'Elapsed Time (s)'
+    # ),
+    # yaxis = list(
+    #   title = 'Start Line',
+    #   tickmode = "linear"
+    # )
+  # )
   
-  cat("bar plot 3\n\n")
-  barplot(elapsed.nodes$elapsedTime,
-          main = "Elapsed Time by Line",
-          xlab = "Script Line",
-          ylab = "Time",
-          names.arg = elapsed.nodes$startLine,
-          horiz = TRUE)
-}
+  print(fig)
 
+}
 

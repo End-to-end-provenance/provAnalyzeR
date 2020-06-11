@@ -261,7 +261,7 @@ generate.function.reassignments.summary <- function(var = NA) {
 }
 
 
-generate.elapsed.time.summary() {
+generate.elapsed.time.summary <- function() {
   analyze.elapsed.time()
 }
 
