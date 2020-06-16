@@ -15,6 +15,8 @@
 #   License along with this program.  If not, see
 #   <http://www.gnu.org/licenses/>.
 
+library(lintr)
+
 ###############################################################################
 
 #' Provenance analysis functions
@@ -157,6 +159,8 @@ analyze.prov.summary <- function (save, create.zip) {
 #' generate.summaries creates the text summary, writing it to the
 #' current output sink(s)
 #' 
+#' @import lintr
+#' 
 #' @param environment the environemnt data frame extracted from the provenance
 #' @noRd
 generate.summaries <- function(environment) {
@@ -177,6 +181,26 @@ generate.summaries <- function(environment) {
   generate.type.changes.summary()
   generate.function.reassignments.summary()
   generate.elapsed.time.summary()
+  
+  # try running lintr
+  generate.lintr.analysis()
+  
+  # markers example
+  # markers <- lapply(seq_along(8), function(i){
+  #   marker <- list()
+  #   marker$type <- "info"
+  #   marker$file <- script
+  #   marker$line <- i
+  #   marker$column <- 1
+  #   marker$message <- paste("testing testing", i)
+  #   return(marker)
+  # })
+  # 
+  # if(rstudioapi::isAvailable()) {
+  #   rstudioapi::callFun("sourceMarkers",
+  #                       name = paste("Testing for", script),
+  #                       markers = markers)
+  # }
 }
 
 #' generate.preexisting.summary lists variables in the global environment that are 
@@ -230,7 +254,7 @@ generate.type.changes.summary <- function(var = NA) {
   # get all variables with type changes
   type.changes <- analyze.type.changes(var)
   
-  if (is.double(type.changes) && type.changes == 0) 
+  if (is.double(type.changes) && type.changes == 0)
     cat("None\n")
   else if(!is.null(type.changes))
     print(type.changes)
@@ -263,5 +287,47 @@ generate.function.reassignments.summary <- function(var = NA) {
 
 generate.elapsed.time.summary <- function() {
   analyze.elapsed.time()
+}
+
+generate.lintr.analysis <- function() {
+  environment <- provParseR::get.environment(.analyze.env$prov)
+  script <- environment$value[environment$label == "script"]
+  
+  
+  linters <- with_defaults(object_usage_linter = NULL,
+                          absolute_path_linter = NULL,
+                          nonportable_path_linter = NULL,
+                          pipe_continuation_linter = NULL,
+                          assignment_linter,  # check that <- is always used for assignment
+                          camel_case_linter = NULL,
+                          closed_curly_linter = NULL,
+                          commas_linter = NULL,
+                          commented_code_linter = NULL,
+                          cyclocomp_linter,  # check for overly complicated expressions
+                          equals_na_linter = NULL,  # possibly include?
+                          extraction_operator_linter = NULL, # possibly include?
+                          function_left_parentheses_linter = NULL,
+                          implicit_integer_linter,  # checks that integers are explicitly typed
+                          infix_spaces_linter = NULL,
+                          line_length_linter = NULL,
+                          no_tab_linter = NULL,
+                          object_length_linter = NULL,
+                          object_name_linter = NULL,
+                          object_name_linter = NULL,
+                          paren_brace_linter = NULL,
+                          semicolon_terminator_linter = NULL,
+                          seq_linter, # check for 1:nrow(...) type expressions
+                          single_quotes_linter = NULL,
+                          spaces_inside_linter = NULL,
+                          spaces_left_parentheses_linter = NULL,
+                          todo_comment_linter = NULL,
+                          trailing_blank_lines_linter = NULL,
+                          trailing_whitespace_linter = NULL,
+                          T_and_F_symbol_linter,  # avoid using T or F for TRUE and FALSE
+                          undesirable_function_linter,  # report use of functions like options or sapply
+                          undesirable_operator_linter,  # report use of undesirable operators
+                          unneeded_concatenation_linter)  # report if c() used unnecessarily)
+  
+    print(lint(script, linters=linters))
 }
 

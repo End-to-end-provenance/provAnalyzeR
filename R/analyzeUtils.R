@@ -156,7 +156,7 @@ save.to.text.file <- function(environment) {
   sink(prov.file, split=TRUE)
   generate.summaries(environment)
   sink()
-  cat(paste("Saving provenance summmary in", prov.file))
+  cat(paste("Saving provenance analysis in", prov.file))
 }
 
 #' save.to.zip.file creates a zip file of the provenance directory

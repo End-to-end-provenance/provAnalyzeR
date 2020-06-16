@@ -8,16 +8,6 @@ context("analyze.type.changes")
 # helper function to create the list of expected tables
 get.expected <- function()
 {
-  # container change
-  d <- data.frame(value = as.character(c(4,4)),
-                  container = c("vector", "list"),
-                  dimension = as.character(c(1,1)),
-                  type = c("numeric", NA),
-                  code = c('d <- 4', 'd <- as.list(d)'),
-                  scriptNum = c(1,1),
-                  startLine = c(12,13),
-                  stringsAsFactors = FALSE)
-  
   # dimension change
   # omit value column as it's too long
   e <- data.frame(container = c("matrix", "matrix"),
@@ -26,16 +16,6 @@ get.expected <- function()
                   code = c('e <- matrix(c(1:100), 4)', 'e <- matrix(c(1:100), 5)'),
                   scriptNum = c(1,1),
                   startLine = c(16,17),
-                  stringsAsFactors = FALSE)
-  
-  # type change
-  f <- data.frame(value = as.character(c(5,5)),
-                  container = c("vector", "vector"),
-                  dimension = as.character(c(1,1)),
-                  type = c("numeric", "integer"),
-                  code = c('f <- 5', 'f <- as.integer(f)'),
-                  scriptNum = c(1,1),
-                  startLine = c(20,21),
                   stringsAsFactors = FALSE)
   
   # multiple valType changes in sequence
@@ -60,16 +40,16 @@ get.expected <- function()
   
   # special data types
   # also omit value and code column due to length
-  s <- data.frame(container = as.character(c(NA,NA,NA,NA,NA)),
-                  dimension = as.character(c(NA,NA,NA,NA,NA)),
-                  type = c('null', 'environment', 'function', 'factor', 'POSIXct'),
-                  scriptNum = c(1,1,1,1,1),
-                  startLine = c(38,39,40,41,42),
+  s <- data.frame(container = as.character(c(NA,NA,NA,NA)),
+                  dimension = as.character(c(NA,NA,NA,NA)),
+                  type = c('null', 'environment', 'function', 'factor'),
+                  scriptNum = c(1,1,1,1),
+                  startLine = c(38,39,40,41),
                   stringsAsFactors = FALSE)
   
   # combine
-  type.changes <- list(d,e,f,g,h,s)
-  names(type.changes) <- c("d", "e", "f", "g", "h", "s")
+  type.changes <- list(e,g,h,s)
+  names(type.changes) <- c("e", "g", "h", "s")
   
   return(type.changes)
 }

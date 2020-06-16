@@ -8,7 +8,7 @@ plot(1:10)
 cc <- 2L
 cc <- 3L
 
-# container change
+# container change (doesn't appear)
 d <- 4
 d <- as.list(d)
 
@@ -16,8 +16,8 @@ d <- as.list(d)
 e <- matrix(c(1:100), 4)
 e <- matrix(c(1:100), 5)
 
-# type change
-f <- 5
+# coercion type change (doesn't appear)
+f <- 5 
 f <- as.integer(f)
 
 # multiple type changes in sequence

@@ -27,7 +27,8 @@ LazyData: true
 Imports: 
     provParseR (>= 0.3),
     provGraphR (>= 0.1.1),
-    plotly (>= 4.9.2.1)
+    plotly (>= 4.9.2.1),
+    lintr (>= 2.0.1)
 Suggests:
     rdtLite,
     rdt,

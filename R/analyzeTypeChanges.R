@@ -90,9 +90,18 @@ analyze.type.changes <- function(var = NA)
     # get data nodes with that name
     nodes <- data.nodes[data.nodes$name == vars.names[i], ]
     
-    if(nrow(nodes) == 1) {
-      remove.indices <<- append(remove.indices, i)
-      return(NULL)
+    if (nrow(nodes) == 1) {
+      remove.indices <<- append (remove.indices, i)
+      return (NULL)
+    }
+    
+    # remove any rows included by coercion functions
+    nodes <- .remove.coercion.functions(nodes)
+    
+    # check again if there are no type changes
+    if (nrow(nodes) == 1) {
+      remove.indices <<- append (remove.indices, i)
+      return (NULL)
     }
     
     # number of nodes > 1 (can compare valTypes)
@@ -197,3 +206,48 @@ analyze.type.changes <- function(var = NA)
   return(.form.df(rows))
 }
 
+
+.remove.coercion.functions <- function(nodes) 
+{
+  # functions not included, as type changed are expected
+  coercion.functions <- c("as.string", "as.integer", "as.Date", "as.list", "as.POSIXct")
+  
+  remove.indices <- c()
+  
+  # for each node, check if the line it changed on has a coercion function in it
+  lapply(c(1:nrow(nodes)), function(i)
+  {
+    # from data nodes (parameter), extract id, value
+    data.id <- nodes$id[i]
+    
+    # print(nodes$id[i])
+    
+    # get proc node which either set or first used the data node
+    proc.id <- .get.p.id(data.id)[1]
+    # cat("THE PROC ID IS:\n")
+    # print(proc.id)
+    
+    # extract code from the line
+    code <- .analyze.env$proc.nodes[.analyze.env$proc.nodes$id == proc.id, "name"]
+    
+    # check if any of the functions are on this line
+    if (any(sapply(coercion.functions, grepl, code))) {
+      # remove this node at the end
+      remove.indices <<- append (remove.indices, i)
+    }
+  })
+  
+  # cat("we are outside\n")
+  # print(length(remove.indices))
+  # cat("all nodes\n")
+  # print(nodes)
+  # cat("remove nodes\n")
+  # print(nodes[remove.indices, ])
+  
+  # remove vars whose type changes occurred by coercion functions
+  if (length(remove.indices) > 0) {
+    nodes <- nodes[-remove.indices, ]
+  }
+
+  return (nodes)
+}

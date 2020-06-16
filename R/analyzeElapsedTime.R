@@ -50,12 +50,16 @@ analyze.elapsed.time <- function()
 #' @noRd
 .get.output.elapsed.time <- function(elapsed.nodes)
 {
+  # shorten names of long lines
+  max = 100
+  names <- lapply(elapsed.nodes$name, strtrim, width = max)
+  
   # create bar chart
   fig <- plotly::plot_ly(
     data = elapsed.nodes,
     x = ~elapsedTime,
     y = ~startLine,
-    text = ~name,
+    text = names,
     color = I("light blue"),
     type = "bar",
     orientation = 'h'
@@ -77,4 +81,13 @@ analyze.elapsed.time <- function()
   print(fig)
 
 }
+
+# .shorten.line.name <- function(line.name) 
+# {
+#   max.char = 30
+#   
+#   if (nchar(line.name) > max.char) {
+#     line.name <- line.name[:20]
+#   }
+# }
 
