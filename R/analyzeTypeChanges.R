@@ -95,22 +95,34 @@ analyze.type.changes <- function(var = NA)
       return (NULL)
     }
     
-    # remove any rows included by coercion functions
-    nodes <- .remove.coercion.functions(nodes)
-    
-    # check again if there are no type changes
-    if (nrow(nodes) == 1) {
-      remove.indices <<- append (remove.indices, i)
-      return (NULL)
-    }
+    # # remove any rows included by coercion functions
+    # nodes <- .remove.coercion.functions(nodes)
+    # 
+    # # check again if there are no type changes
+    # if (nrow(nodes) == 1) {
+    #   remove.indices <<- append (remove.indices, i)
+    #   return (NULL)
+    # }
     
     # number of nodes > 1 (can compare valTypes)
     # keep indices of nodes with type change
     type.changes <- c()
-    lapply(c(2:nrow(nodes)), function(i) {
-      if(nodes$valType[i] != nodes$valType[i-1])
+    
+    val.type.changes <- lapply(c(2:nrow(nodes)), function(i) {
+      # check if the type changed in any way
+      if (nodes$valType[i] != nodes$valType[i-1]) {
         type.changes <<- append(type.changes, c(i-1, i))
+        
+        val.type.changes <- .get.val.type.changes(nodes, i)
+        
+        return(val.type.changes)
+      }
     })
+    val.type.changes <- unlist(val.type.changes)
+    changes <- "NA"
+    changes <- append(changes, val.type.changes)
+   
+    
     type.changes <- unique(type.changes)
     
     if(length(type.changes) == 0) {
@@ -122,7 +134,7 @@ analyze.type.changes <- function(var = NA)
     nodes <- nodes[type.changes, ]
     
     # prepare for printing
-    return(.get.output.type.changes(nodes))
+    return(.get.output.type.changes(nodes, changes))
   })
   
   # remove vars without type changes
@@ -137,6 +149,8 @@ analyze.type.changes <- function(var = NA)
   }
   
   names(vars) <- vars.names
+  
+  #print(vars)
   
   # CURRENTLY UNIMPLEMENTED
   # if the user has specified variable(s) to be queried, get the valid ones
@@ -163,6 +177,8 @@ analyze.type.changes <- function(var = NA)
   #   names(vars) <- valid.queries
   # }
   
+  print(vars)
+  
   return(vars)
 }
 
@@ -170,11 +186,12 @@ analyze.type.changes <- function(var = NA)
 #' columns: value, container, dimension, type, code, scriptNum, startLine
 #'
 #' @param data.nodes The data nodes to be displayed to the user.
+#' @param val.type.changes Specifies what part of the type changed.
 #'
 #' @return The data frame of type changes to be returned to the user.
 #'         columns: value, container, dimension, type, code, scriptNum, startLine
 #' @noRd
-.get.output.type.changes <- function(data.nodes)
+.get.output.type.changes <- function(data.nodes, changes)
 {
   # script num, line num, full code, value, valType
   # for each data node (row), get required fields for output
@@ -196,10 +213,10 @@ analyze.type.changes <- function(var = NA)
                                          c("name", "scriptNum", "startLine")]
     
     # combine fields
-    fields <- cbind(data.value, val.type, proc.fields, stringsAsFactors = FALSE)
+    fields <- cbind(data.value, proc.fields, val.type, changes[i], stringsAsFactors = FALSE)
     names(fields) <- c("value", 
-                       "container", "dimension", "type", 
-                       "code", "scriptNum", "startLine")
+                       "code", "scriptNum", "startLine",
+                       "container", "dimension", "type", "changes")
     return(fields)
   })
   
@@ -207,47 +224,89 @@ analyze.type.changes <- function(var = NA)
 }
 
 
-.remove.coercion.functions <- function(nodes) 
-{
-  # functions not included, as type changed are expected
-  coercion.functions <- c("as.string", "as.integer", "as.Date", "as.list", "as.POSIXct")
-  
-  remove.indices <- c()
-  
-  # for each node, check if the line it changed on has a coercion function in it
-  lapply(c(1:nrow(nodes)), function(i)
-  {
-    # from data nodes (parameter), extract id, value
-    data.id <- nodes$id[i]
-    
-    # print(nodes$id[i])
-    
-    # get proc node which either set or first used the data node
-    proc.id <- .get.p.id(data.id)[1]
-    # cat("THE PROC ID IS:\n")
-    # print(proc.id)
-    
-    # extract code from the line
-    code <- .analyze.env$proc.nodes[.analyze.env$proc.nodes$id == proc.id, "name"]
-    
-    # check if any of the functions are on this line
-    if (any(sapply(coercion.functions, grepl, code))) {
-      # remove this node at the end
-      remove.indices <<- append (remove.indices, i)
-    }
-  })
-  
-  # cat("we are outside\n")
-  # print(length(remove.indices))
-  # cat("all nodes\n")
-  # print(nodes)
-  # cat("remove nodes\n")
-  # print(nodes[remove.indices, ])
-  
-  # remove vars whose type changes occurred by coercion functions
-  if (length(remove.indices) > 0) {
-    nodes <- nodes[-remove.indices, ]
-  }
+.get.val.type.changes <- function(nodes, i) {
+  # initialize values to false (no changes occurred)
+  val.type.changes <- c()
 
-  return (nodes)
+  # split the valType into its components
+  val.type.current <- provParseR::get.val.type(.analyze.env$prov, node.id = nodes$id[i])
+  val.type.prev <- provParseR::get.val.type(.analyze.env$prov, node.id = nodes$id[i - 1]) 
+  # more efficient way to do this?
+
+  # check if the change was from container
+  if (.get.val.type.changes.helper(val.type.current, val.type.prev, "container"))
+    val.type.changes <- paste(val.type.changes, "c", sep = "")
+
+  # check if change was from dimension
+  if (.get.val.type.changes.helper(val.type.current, val.type.prev, "dimension"))
+    val.type.changes <- paste(val.type.changes, "d", sep = "")
+  
+  # check if change was from type
+  if (.get.val.type.changes.helper(val.type.current, val.type.prev, "type"))
+    val.type.changes <- paste(val.type.changes, "t", sep = "")
+
+  return(val.type.changes)
 }
+
+.get.val.type.changes.helper <- function(val.type.current, val.type.prev, component) {
+  changed <- FALSE
+  
+  if (is.na(val.type.current[[component]]) || is.na(val.type.prev[[component]])) {
+    # if they are not both NA, then a component change occurred
+    if (!(is.na(val.type.current[[component]]) && is.na(val.type.prev[[component]]))) {
+      changed <- TRUE
+    }
+  }
+  else if (val.type.current[[component]] != val.type.prev[[component]]) {
+    # a change occurred and neither is NA
+    changed <- TRUE
+  }
+  
+  return(changed)
+}
+
+
+# .remove.coercion.functions <- function(nodes) 
+# {
+#   # functions not included, as type changed are expected
+#   coercion.functions <- c("as.string", "as.integer", "as.Date", "as.list", "as.POSIXct")
+#   
+#   remove.indices <- c()
+#   
+#   # for each node, check if the line it changed on has a coercion function in it
+#   lapply(c(1:nrow(nodes)), function(i)
+#   {
+#     # from data nodes (parameter), extract id, value
+#     data.id <- nodes$id[i]
+#     
+#     # print(nodes$id[i])
+#     
+#     # get proc node which either set or first used the data node
+#     proc.id <- .get.p.id(data.id)[1]
+#     # cat("THE PROC ID IS:\n")
+#     # print(proc.id)
+#     
+#     # extract code from the line
+#     code <- .analyze.env$proc.nodes[.analyze.env$proc.nodes$id == proc.id, "name"]
+#     
+#     # check if any of the functions are on this line
+#     if (any(sapply(coercion.functions, grepl, code))) {
+#       # remove this node at the end
+#       remove.indices <<- append (remove.indices, i)
+#     }
+#   })
+#   
+#   # cat("we are outside\n")
+#   # print(length(remove.indices))
+#   # cat("all nodes\n")
+#   # print(nodes)
+#   # cat("remove nodes\n")
+#   # print(nodes[remove.indices, ])
+#   
+#   # remove vars whose type changes occurred by coercion functions
+#   if (length(remove.indices) > 0) {
+#     nodes <- nodes[-remove.indices, ]
+#   }
+# 
+#   return (nodes)
+# }

@@ -1,0 +1,4 @@
+Name: Edit snippets
+Description: Opens RStudio snippets file for editing
+Binding: prov.analyze.run.addin
+Interactive: false

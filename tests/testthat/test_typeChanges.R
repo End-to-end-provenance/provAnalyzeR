@@ -8,48 +8,74 @@ context("analyze.type.changes")
 # helper function to create the list of expected tables
 get.expected <- function()
 {
+  # container change
+  d <- data.frame(value = as.character(c(4,4)),
+                  code = c('d <- 4', 'd <- as.list(d)'),
+                  scriptNum = c(1,1),
+                  startLine = c(12,13),
+                  container = c("vector", "list"),
+                  dimension = as.character(c(1,1)),
+                  type = c("numeric", NA),
+                  changes = c("NA", "ct"),
+                  stringsAsFactors = FALSE)
+  
   # dimension change
   # omit value column as it's too long
-  e <- data.frame(container = c("matrix", "matrix"),
-                  dimension = c("4,25", "5,20"),
-                  type = c("integer", "integer"),
-                  code = c('e <- matrix(c(1:100), 4)', 'e <- matrix(c(1:100), 5)'),
+  e <- data.frame(code = c('e <- matrix(c(1:100), 4)', 'e <- matrix(c(1:100), 5)'),
                   scriptNum = c(1,1),
                   startLine = c(16,17),
+                  container = c("matrix", "matrix"),
+                  dimension = c("4,25", "5,20"),
+                  type = c("integer", "integer"),
+                  changes = c("NA", "d"),
+                  stringsAsFactors = FALSE)
+  
+  # type change
+  f <- data.frame(value = as.character(c(5,5)),
+                  code = c('f <- 5', 'f <- as.integer(f)'),
+                  scriptNum = c(1,1),
+                  startLine = c(20,21),
+                  container = c("vector", "vector"),
+                  dimension = as.character(c(1,1)),
+                  type = c("numeric", "integer"),
+                  changes = c("NA", "t"),
                   stringsAsFactors = FALSE)
   
   # multiple valType changes in sequence
   g <- data.frame(value = c('6', '"six"', 'TRUE'),
-                  container = c("vector", "vector", "vector"),
-                  dimension = as.character(c(1,1,1)),
-                  type = c("numeric", "character", "logical"),
                   code = c('g <- 6', 'g <- "six"', 'g <- TRUE'),
                   scriptNum = c(1,1,1),
                   startLine = c(24,25,26),
+                  container = c("vector", "vector", "vector"),
+                  dimension = as.character(c(1,1,1)),
+                  type = c("numeric", "character", "logical"),
+                  changes = c("NA", "t", "t"),
                   stringsAsFactors = FALSE)
   
   # multiple valType changes, with no type changes
   h <- data.frame(value = c('TRUE', '"seven"', '"eight"', '8'),
-                  container = c("vector", "vector", "vector", "vector"),
-                  dimension = as.character(c(1,1,1,1)),
-                  type = c("logical", "character", "character", "integer"),
                   code = c('h <- TRUE', 'h <- "seven"', 'h <- "eight"', 'h <- 8L'),
                   scriptNum = c(1,1,1,1),
                   startLine = c(30,31,32,33),
+                  container = c("vector", "vector", "vector", "vector"),
+                  dimension = as.character(c(1,1,1,1)),
+                  type = c("logical", "character", "character", "integer"),
+                  changes = c("NA", "t", "t", NA),
                   stringsAsFactors = FALSE)
   
   # special data types
   # also omit value and code column due to length
-  s <- data.frame(container = as.character(c(NA,NA,NA,NA)),
-                  dimension = as.character(c(NA,NA,NA,NA)),
-                  type = c('null', 'environment', 'function', 'factor'),
-                  scriptNum = c(1,1,1,1),
-                  startLine = c(38,39,40,41),
+  s <- data.frame(scriptNum = c(1,1,1,1,1),
+                  startLine = c(38,39,40,41,42),
+                  container = as.character(c(NA,NA,NA,NA,NA)),
+                  dimension = as.character(c(NA,NA,NA,NA,NA)),
+                  type = c('null', 'environment', 'function', 'factor', 'POSIXct'),
+                  changes = c("NA", "t", "t", "t", "t"),
                   stringsAsFactors = FALSE)
   
   # combine
-  type.changes <- list(e,g,h,s)
-  names(type.changes) <- c("e", "g", "h", "s")
+  type.changes <- list(d,e,f,g,h,s)
+  names(type.changes) <- c("d", "e", "f", "g", "h", "s")
   
   return(type.changes)
 }
@@ -116,7 +142,7 @@ test_that("analyze.type.changes - no parameters",
           {
             c1 <- analyze.type.changes()
             c1$e <- c1$e[ ,-1]          # omit value column
-            c1$s <- c1$s[ , c(-1,-5)]   # omit value and code column
+            c1$s <- c1$s[ , c(-1,-2)]   # omit value and code column
 
             expect_equivalent(c1, expected)
           })

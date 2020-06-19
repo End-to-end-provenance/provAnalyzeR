@@ -13,7 +13,7 @@ prov.analyze.file(prov.file, save = FALSE, create.zip = FALSE)
 prov.analyze.run(r.script, save = FALSE, create.zip = FALSE, ...)
 }
 \arguments{
-\item{save}{if true saves the analysis to the file prov-analyze.txt in the 
+\item{save}{if true saves the analysis to the file prov-analyze.txt in the
 provenance directory}
 
 \item{create.zip}{if true all of the provenance data will be packaged up
@@ -49,7 +49,7 @@ For provenance collected from executing a script file, the analysis identifies:
 }
 
 Creating a zip file depends on a zip executable being on the search path.
-By default, it looks for a program named zip.  To use a program with 
+By default, it looks for a program named zip.  To use a program with
 a different name, set the value of the R_ZIPCMD environment variable.  This
 code has been tested with Unix zip and with 7-zip on Windows.
 }
