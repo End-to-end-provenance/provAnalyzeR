@@ -183,7 +183,7 @@ generate.summaries <- function(environment) {
   generate.function.reassignments.summary()
   generate.elapsed.time.summary()
   
-  # try running lintr
+  # run lintr static analysis
   generate.lintr.analysis()
 }
 
@@ -236,12 +236,13 @@ generate.type.changes.summary <- function(vars = NA) {
   # get all variables with type changes
   type.changes <- analyze.type.changes(vars)
   
+  cat ("TYPE CHANGES:\n")
+  
   if (is.double(type.changes) && type.changes == 0) {
     cat("None\n") # FIX THIS PORTION 
   }
   else if(!is.null(type.changes)) {
-    cat ("TYPE CHANGES:\n")
-
+    # generate markers
     create.markers(type.changes, "info")
 
     # loop through each element, printing relevant information
@@ -315,16 +316,26 @@ generate.function.reassignments.summary <- function(var = NA) {
   cat("\n")
 }
 
-
+#' Generates markers for type changes in the markers pane of RStudio.
+#' 
+#' @param changes.list The list of all type changes that occurred in the script.
+#' @param type ID for the markers pane specifying the type of change.
+#' Available: "error", "warning", "info", "style", or "usage"
+#' 
+#' @noRd
 generate.elapsed.time.summary <- function() {
   analyze.elapsed.time()
 }
 
+#' Runs lintr with specified linters. Prints output as markers, which appear
+#' in the markers pane on RStudio.
+#' 
+#' @noRd
 generate.lintr.analysis <- function() {
   environment <- provParseR::get.environment(.analyze.env$prov)
   script <- environment$value[environment$label == "script"]
   
-  
+  # set linters to use, or NULL if not desired
   linters <- with_defaults(object_usage_linter = NULL,
                           absolute_path_linter = NULL,
                           nonportable_path_linter = NULL,
@@ -338,7 +349,7 @@ generate.lintr.analysis <- function() {
                           equals_na_linter = NULL,  # possibly include?
                           extraction_operator_linter = NULL, # possibly include?
                           function_left_parentheses_linter = NULL,
-                          implicit_integer_linter,  # checks that integers are explicitly typed
+                          implicit_integer_linter = NULL,
                           infix_spaces_linter = NULL,
                           line_length_linter = NULL,
                           no_tab_linter = NULL,
@@ -362,6 +373,14 @@ generate.lintr.analysis <- function() {
     print(lint(script, linters=linters))
 }
 
+#' Generates markers for type changes in the markers pane of RStudio.
+#' 
+#' @param changes.list The list of all type changes that occurred in the script.
+#' @param type ID for the markers pane specifying the type of change.
+#' Available: "error", "warning", "info", "style", or "usage"
+#' 
+#' 
+#' @noRd
 create.markers <- function(changes.list, type) {
   environment <- provParseR::get.environment(.analyze.env$prov)
   script <- environment$value[environment$label == "script"]

@@ -1,4 +1,4 @@
-Name: Edit snippets
-Description: Opens RStudio snippets file for editing
+Name: Run analyzeR
+Description: Collects provenance and performs analysis on the active script
 Binding: prov.analyze.run.addin
 Interactive: false

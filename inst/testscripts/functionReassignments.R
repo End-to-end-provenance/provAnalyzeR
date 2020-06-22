@@ -30,13 +30,13 @@ divide_2 <- divide(5, 2)
 
 # function reassigned multiple times
 uselessFunction <- function() {
-  hello = 5
+  hello <- 5
 }
 
 uselessFunction <- function() {
-  hello = 5
+  hello <- 5
 }
 
 uselessFunction <- function() {
-  hello = 5
+  hello <- 5
 }

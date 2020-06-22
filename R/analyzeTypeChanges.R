@@ -177,8 +177,6 @@ analyze.type.changes <- function(var = NA)
   #   names(vars) <- valid.queries
   # }
   
-  print(vars)
-  
   return(vars)
 }
 
@@ -224,6 +222,17 @@ analyze.type.changes <- function(var = NA)
 }
 
 
+#' Determines the type or types of changes that occurred for a data node at a 
+#' given point in the script execution.
+#'
+#' @param nodes The list of data nodes for a particular variable.
+#' @param i Index determining which node in the list is currently being 
+#' examined.
+#'    
+#' @return A character string containing some combination of c, d, and t for
+#' container, dimension, and type-related changes, respectively.
+#'         
+#' @noRd
 .get.val.type.changes <- function(nodes, i) {
   # initialize values to false (no changes occurred)
   val.type.changes <- c()
@@ -231,7 +240,7 @@ analyze.type.changes <- function(var = NA)
   # split the valType into its components
   val.type.current <- provParseR::get.val.type(.analyze.env$prov, node.id = nodes$id[i])
   val.type.prev <- provParseR::get.val.type(.analyze.env$prov, node.id = nodes$id[i - 1]) 
-  # more efficient way to do this?
+  # TODO more efficient way to do this?
 
   # check if the change was from container
   if (.get.val.type.changes.helper(val.type.current, val.type.prev, "container"))
@@ -248,6 +257,18 @@ analyze.type.changes <- function(var = NA)
   return(val.type.changes)
 }
 
+#' A helper function for .get.val.type.changes that checks if a given type
+#' change occurred.
+#'
+#' @param val.type.current The valType of the node currently being examined. 
+#' @param val.type.prev The valType of the previous node, compared to the 
+#' current one to determine if any changes occurred.
+#' @param component The part of the valType being compared between the two 
+#' nodes. Can be container, dimension, or type.
+#'    
+#' @return TRUE if the component changed and FALSE otherwise.
+#'         
+#' @noRd
 .get.val.type.changes.helper <- function(val.type.current, val.type.prev, component) {
   changed <- FALSE
   
