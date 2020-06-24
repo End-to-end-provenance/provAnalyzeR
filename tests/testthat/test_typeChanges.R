@@ -53,14 +53,14 @@ get.expected <- function()
                   stringsAsFactors = FALSE)
   
   # multiple valType changes, with no type changes
-  h <- data.frame(value = c('TRUE', '"seven"', '"eight"', '8'),
-                  code = c('h <- TRUE', 'h <- "seven"', 'h <- "eight"', 'h <- 8L'),
-                  scriptNum = c(1,1,1,1),
-                  startLine = c(30,31,32,33),
-                  container = c("vector", "vector", "vector", "vector"),
-                  dimension = as.character(c(1,1,1,1)),
-                  type = c("logical", "character", "character", "integer"),
-                  changes = c("NA", "t", "t", NA),
+  h <- data.frame(value = c('FALSE', '"seven"', '8'),
+                  code = c('h <- FALSE', 'h <- "seven"', 'h <- 8L'),
+                  scriptNum = c(1,1,1),
+                  startLine = c(29,31,33),
+                  container = c("vector", "vector", "vector"),
+                  dimension = as.character(c(1,1,1)),
+                  type = c("logical", "character", "integer"),
+                  changes = c("NA", "t", "t"),
                   stringsAsFactors = FALSE)
   
   # special data types

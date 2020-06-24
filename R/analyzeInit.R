@@ -34,7 +34,7 @@
 .analyze.env$proc.data <- NULL
 
 # environment for loaded variables
-.analyze.env$var.env <- NULL
+# .analyze.env$var.env <- NULL
 
 # path to provenance directory
 .analyze.env$prov.dir <- NULL
@@ -63,8 +63,8 @@
   .analyze.env$data.proc <- provParseR::get.data.proc(.analyze.env$prov)
   .analyze.env$proc.data <- provParseR::get.proc.data(.analyze.env$prov)
   
-  # var.env (for loading variables for viewing)
-  .analyze.env$var.env <- new.env(parent = .analyze.env)
+  # # var.env (for loading variables for viewing)
+  # .analyze.env$var.env <- new.env(parent = .analyze.env)
   
   # path to provenance directory
   environment <- provParseR::get.environment(.analyze.env$prov)
@@ -196,7 +196,7 @@
   .analyze.env$proc.data <- NULL
   
   # environment for loaded variables
-  .analyze.env$var.env <- NULL
+  # .analyze.env$var.env <- NULL
   
   # path to provenance directory
   .analyze.env$prov.dir <- NULL

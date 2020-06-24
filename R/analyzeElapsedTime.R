@@ -54,6 +54,12 @@ analyze.elapsed.time <- function()
   max = 100
   names <- lapply(elapsed.nodes$name, strtrim, width = max)
   
+  # if the name has been shortened, add "..."
+  lapply(c(1:nrow(elapsed.nodes)), function(i) {
+    if (!(elapsed.nodes$name[i] == names[i]))
+      names[i] <<- paste(names[i], "...")
+  })
+ 
   # create bar chart
   fig <- plotly::plot_ly(
     data = elapsed.nodes,

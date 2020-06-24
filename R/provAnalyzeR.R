@@ -141,6 +141,7 @@ prov.analyze.run <- function(r.script, save=FALSE, create.zip=FALSE, ...) {
 #' provenance directory
 #' @param create.zip if true all of the provenance data will be packaged up
 #'   into a zip file stored in the current working directory.
+#'   
 #' @noRd
 analyze.prov.summary <- function(save, create.zip) {
   environment <- provParseR::get.environment(.analyze.env$prov)
@@ -172,7 +173,6 @@ generate.summaries <- function(environment) {
   if (script.file != "") {
     cat (paste ("POTENTIAL ANOMALIES DETECTED for", script.file, "\n\n"))
   } else {
-    # NOT CURRENTLY IMPLEMENTED
     cat (paste ("POTENTIAL ANOMALIES DETECTED for Console Session\n\n"))
   }
   
@@ -220,7 +220,7 @@ generate.invalid.names.summary <- function() {
   if (is.double(invalid.names) && invalid.names == 0) 
     cat("None\n")
   else if (!is.null(invalid.names))
-    print(invalid.names)
+    .generate.invalid.names.helper(invalid.names)
   
   cat("\n")
 }
@@ -239,60 +239,16 @@ generate.type.changes.summary <- function(vars = NA) {
   cat ("TYPE CHANGES:\n")
   
   if (is.double(type.changes) && type.changes == 0) {
-    cat("None\n") # FIX THIS PORTION 
+    cat("None\n")
   }
   else if(!is.null(type.changes)) {
     # generate markers
     create.markers(type.changes, "info")
 
-    # loop through each element, printing relevant information
-    lapply(c(1:length(type.changes)), function(i) {
-      var <- type.changes[[i]]
-
-      cat(paste("The type of variable ", names(type.changes[i]), " has changed. ",
-                names(type.changes[i]), " was declared on line ", var$startLine[1],
-                " in script ", var$scriptNum[1], ".\n", sep = ""))
-
-      lapply(c(2:nrow(var)), function(j) {
-        cat(paste("\t", j-1, ": Script ", var$scriptNum[j], ", line ", 
-                  var$startLine[j], "\n", sep = ""))
-        
-        
-        # if there were container changes, print
-        if (!identical(grep("c", var$changes), integer(0))) {
-          cat(paste("\t\tcontainer changed to: ", var$container[j],
-          "\n\t\tfrom: ", var$container[j-1], "\n",
-          sep = ""))
-        }
-    
-        # if there were dimension changes, print
-        if (!identical(grep("d", var$changes), integer(0))) {
-          cat(paste("\t\tdimension changed to: ", var$dimension[j],
-          "\n\t\tfrom: ", var$dimension[j-1], "\n",
-          sep = ""))
-        }
-
-        # if there were type changes, print
-        if (!identical(grep("t", var$changes), integer(0))) {
-          cat(paste("\t\ttype changed to: ", var$type[j],
-          "\n\t\tfrom: ", var$type[j-1], "\n",
-          sep = ""))
-        }
-        
-        # print(var$code)
-        # print(is.character(var$code))
-        # print(nchar(var$code))
-        # if (nchar(var$code) > 50) 
-        #   cat(paste("code snippet: ", substring(var$code, 1, 47), "..."))
-        # else
-        #   cat(paste("code snippet: ", var$code))
-      })
-
-    })
+    # print to console
+    .generate.type.changes.helper(type.changes)
   }
-  
   cat("\n")
-  
 }
 
 #' generate.function.reassignments.summary lists function variables in the global
@@ -308,10 +264,12 @@ generate.function.reassignments.summary <- function(var = NA) {
   # get all function variables that are reassigned
   function.reassignments <- analyze.function.reassignments(var)
   
-  if (is.double(function.reassignments) && function.reassignments == 0) 
+  if (is.double(function.reassignments) && function.reassignments == 0) {
     cat("None\n")
-  else if(!is.null(function.reassignments))
-    print(function.reassignments)
+  }
+  else if(!is.null(function.reassignments)) {
+    .generate.function.reassignments.helper(function.reassignments)
+  }
   
   cat("\n")
 }
@@ -385,17 +343,36 @@ create.markers <- function(changes.list, type) {
   environment <- provParseR::get.environment(.analyze.env$prov)
   script <- environment$value[environment$label == "script"]
   
-  # markers example
+  # build markers
   markers <- lapply(c(1:length(changes.list)), function(i) {
     var <- changes.list[[i]]
     
     markers <- lapply(c(2:nrow(var)), function(j) {
+      # generate message
+      message <- "Change to"
+      # if there were container changes, add to message
+      if (.are.changes("c", var$changes[j]))
+        message <- paste(message, "container,")
+      
+      # if there were dimension changes, print
+      if (.are.changes("d", var$changes[j])) 
+        message <- paste(message, "dimension,")
+      
+      # if there were type changes, print
+      if (.are.changes("t", var$changes[j])) 
+        message <- paste(message, "type,")
+      
+      # remove the extra comma
+      message <- substr(message, 1, nchar(message) - 1)
+      
       marker <- list()
       marker$type <- type
       marker$file <- script
       marker$line <- var$startLine[j]
       marker$column <- 1
-      marker$message <- paste("The type of variable", names(changes.list[i]), "has changed.")
+      marker$message <- paste(message ," of variable ", names(changes.list[i]), 
+                              ". See console summary for more 
+                              details.", sep="")
       
       return(marker)
     })
@@ -408,4 +385,98 @@ create.markers <- function(changes.list, type) {
                         name = "type changes",
                         markers = markers)
   }
+}
+
+#' A helper function that prints output to console in a human-readable format.
+#'
+#' @param type.changes The list of all changes that occurred in the script.
+#'         
+#' @noRd
+.generate.type.changes.helper <- function(type.changes) {
+  # loop through each element, printing relevant information
+  lapply(c(1:length(type.changes)), function(i) {
+    var <- type.changes[[i]]
+    
+    cat(paste("The type of variable ", names(type.changes[i]), " has changed. ",
+              names(type.changes[i]), " was declared on line ", var$startLine[1],
+              " in script ", var$scriptNum[1], ".\n", sep = ""))
+    
+    lapply(c(2:nrow(var)), function(j) {
+      cat(paste("\t", j-1, ": Script ", var$scriptNum[j], ", line ", 
+                var$startLine[j], "\n", sep = ""))
+      
+      # if there were container changes, print
+      if (.are.changes("c", var$changes[j])) {
+        cat(paste("\t\tcontainer changed to: ", var$container[j],
+                  "\n\t\tfrom:\t\t",  "      ", var$container[j-1], "\n",
+                  sep = ""))
+      }
+      
+      # if there were dimension changes, print
+      if (.are.changes("d", var$changes[j])) {
+        cat(paste("\t\tdimension changed to: ", var$dimension[j],
+                  "\n\t\tfrom:\t\t", "      ", var$dimension[j-1], "\n",
+                  sep = ""))
+      }
+      
+      # if there were type changes, print
+      if (.are.changes("t", var$changes[j])) {
+        cat(paste("\t\ttype changed to: ", var$type[j],
+                  "\n\t\tfrom:\t\t", " ", var$type[j-1], "\n",
+                  sep = ""))
+      }
+      
+      if (nchar(var$code[j]) > 50)
+        cat(paste("\t\tcode excerpt:", substring(var$code[j], 1, 47), "...\n"))
+      else
+        cat(paste("\t\tcode excerpt:", var$code[j], "\n"))
+    })
+  })
+}
+
+.are.changes <- function(change.type, changes.value) {
+  are.changes <- FALSE
+  
+  # check if there was this type of change
+  if (!identical(grep(change.type, changes.value), integer(0)))
+    are.changes <- TRUE
+  
+  return(are.changes)
+}
+
+.generate.invalid.names.helper <- function(invalid.names) {
+  # loop through each element, printing relevant information
+  lapply(c(1:length(invalid.names)), function(i) {
+    var <- invalid.names[[i]]
+    
+    cat(paste("It is not recommended to use ", names(invalid.names[i]), 
+              " as an object name. ", names(invalid.names[i]), 
+              " was first declared on line ", var$startLine[1],
+              " in script ", var$scriptNum[1], ".\n", sep = ""))
+  })
+}
+
+.generate.function.reassignments.helper <- function(function.reassignments) {
+  # loop through each element, printing relevant information
+  lapply(c(1:length(function.reassignments)), function(i) {
+    var <- function.reassignments[[i]]
+    
+    cat(paste("The function ", names(function.reassignments[i]), 
+              " has been reassigned. ", names(function.reassignments[i]), 
+              " was first declared on line ", var$startLine[1],
+              " in script ", var$scriptNum[1], ".\n", sep = ""))
+    
+    lapply(c(2:nrow(var)), function(j) {
+      cat(paste("\t", j-1, ": Script ", var$scriptNum[j], ", line ", 
+                var$startLine[j], "\n", sep = ""))
+      
+      # add tabs to code for printing purposes
+      var$code[j] <- gsub("\n", "\n\t\t", var$code[j])
+      
+      if (nchar(var$code[j]) > 50)
+        cat(paste("\t\tcode excerpt:\n\t\t", substring(var$code[j], 1, 47), "...\n"))
+      else
+        cat(paste("\t\tcode excerpt:\n\t\t", var$code[j], "\n"))
+    })
+  })
 }

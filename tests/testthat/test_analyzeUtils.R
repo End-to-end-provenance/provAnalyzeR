@@ -18,7 +18,7 @@ test_that("Utility - .clear",
             expect_false(is.null(provAnalyzeR:::.analyze.env$data.nodes))
             expect_false(is.null(provAnalyzeR:::.analyze.env$data.proc))
             expect_false(is.null(provAnalyzeR:::.analyze.env$proc.data))
-            expect_false(is.null(provAnalyzeR:::.analyze.env$var.env))
+            # expect_false(is.null(provAnalyzeR:::.analyze.env$var.env))
             expect_false(is.null(provAnalyzeR:::.analyze.env$prov.dir))
             
             # clear .analyze.env
@@ -32,7 +32,7 @@ test_that("Utility - .clear",
             expect_true(is.null(provAnalyzeR:::.analyze.env$data.nodes))
             expect_true(is.null(provAnalyzeR:::.analyze.env$data.proc))
             expect_true(is.null(provAnalyzeR:::.analyze.env$proc.data))
-            expect_true(is.null(provAnalyzeR:::.analyze.env$var.env))
+            # expect_true(is.null(provAnalyzeR:::.analyze.env$var.env))
             expect_true(is.null(provAnalyzeR:::.analyze.env$prov.dir))
           })
 

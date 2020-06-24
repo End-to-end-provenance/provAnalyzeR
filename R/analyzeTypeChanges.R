@@ -106,18 +106,19 @@ analyze.type.changes <- function(var = NA)
     
     # number of nodes > 1 (can compare valTypes)
     # keep indices of nodes with type change
-    type.changes <- c()
+    type.changes <- 1 # start with just the first node
     
     val.type.changes <- lapply(c(2:nrow(nodes)), function(i) {
       # check if the type changed in any way
       if (nodes$valType[i] != nodes$valType[i-1]) {
-        type.changes <<- append(type.changes, c(i-1, i))
+        type.changes <<- append(type.changes, i)
         
         val.type.changes <- .get.val.type.changes(nodes, i)
         
         return(val.type.changes)
       }
     })
+    
     val.type.changes <- unlist(val.type.changes)
     changes <- "NA"
     changes <- append(changes, val.type.changes)
@@ -125,7 +126,7 @@ analyze.type.changes <- function(var = NA)
     
     type.changes <- unique(type.changes)
     
-    if(length(type.changes) == 0) {
+    if(length(type.changes) <= 1) {
       remove.indices <<- append(remove.indices, i)
       return(NULL)
     }
@@ -149,8 +150,6 @@ analyze.type.changes <- function(var = NA)
   }
   
   names(vars) <- vars.names
-  
-  #print(vars)
   
   # CURRENTLY UNIMPLEMENTED
   # if the user has specified variable(s) to be queried, get the valid ones
@@ -253,6 +252,9 @@ analyze.type.changes <- function(var = NA)
   # check if change was from type
   if (.get.val.type.changes.helper(val.type.current, val.type.prev, "type"))
     val.type.changes <- paste(val.type.changes, "t", sep = "")
+  
+  # cat("the changes are in: ")
+  # print(val.type.changes)
 
   return(val.type.changes)
 }
@@ -272,6 +274,8 @@ analyze.type.changes <- function(var = NA)
 .get.val.type.changes.helper <- function(val.type.current, val.type.prev, component) {
   changed <- FALSE
   
+  # print(paste(val.type.current[[component]], val.type.prev[[component]]))
+  
   if (is.na(val.type.current[[component]]) || is.na(val.type.prev[[component]])) {
     # if they are not both NA, then a component change occurred
     if (!(is.na(val.type.current[[component]]) && is.na(val.type.prev[[component]]))) {
@@ -279,6 +283,8 @@ analyze.type.changes <- function(var = NA)
     }
   }
   else if (val.type.current[[component]] != val.type.prev[[component]]) {
+    # cat("we got inside\n")
+    
     # a change occurred and neither is NA
     changed <- TRUE
   }
