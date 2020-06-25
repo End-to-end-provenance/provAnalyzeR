@@ -34,9 +34,9 @@
 		"rdt:environment": {
 			"rdt:name": "environment",
 			"rdt:architecture": "x86_64",
-			"rdt:operatingSystem": "darwin15.6.0",
+			"rdt:operatingSystem": "darwin17.0",
 			"rdt:language": "R",
-			"rdt:langVersion": "R version 3.6.3 (2020-02-29)",
+			"rdt:langVersion": "R version 4.0.1 (2020-06-06)",
 			"rdt:script": "/Users/rosesheehan/Desktop/CompSci/provSummer/provAnalyzeR/inst/testscripts/empty.R",
 			"rdt:scriptTimeStamp": "2020-05-26T14.28.14CDT",
 			"rdt:totalElapsedTime": "0.0",
@@ -44,13 +44,13 @@
 			"rdt:sourcedScriptTimeStamps": "",
 			"rdt:workingDirectory": "/Users/rosesheehan/Desktop/CompSci/provSummer/provAnalyzeR/inst",
 			"rdt:provDirectory": "/Users/rosesheehan/Desktop/CompSci/provSummer/provAnalyzeR/inst/testdata/prov_empty",
-			"rdt:provTimestamp": "2020-06-03T15.31.30CDT",
+			"rdt:provTimestamp": "2020-06-24T15.03.26CDT",
 			"rdt:hashAlgorithm": "md5"
 		},
 
 		"rdt:l1": {
 			"name": "base",
-			"version": "3.6.3",
+			"version": "4.0.1",
 			"prov:type": {
 				"$": "prov:Collection",
 				"type": "xsd:QName"
@@ -58,7 +58,7 @@
 		},
 		"rdt:l2": {
 			"name": "datasets",
-			"version": "3.6.3",
+			"version": "4.0.1",
 			"prov:type": {
 				"$": "prov:Collection",
 				"type": "xsd:QName"
@@ -66,7 +66,7 @@
 		},
 		"rdt:l3": {
 			"name": "ggplot2",
-			"version": "3.3.1",
+			"version": "3.3.2",
 			"prov:type": {
 				"$": "prov:Collection",
 				"type": "xsd:QName"
@@ -74,7 +74,7 @@
 		},
 		"rdt:l4": {
 			"name": "graphics",
-			"version": "3.6.3",
+			"version": "4.0.1",
 			"prov:type": {
 				"$": "prov:Collection",
 				"type": "xsd:QName"
@@ -82,7 +82,7 @@
 		},
 		"rdt:l5": {
 			"name": "grDevices",
-			"version": "3.6.3",
+			"version": "4.0.1",
 			"prov:type": {
 				"$": "prov:Collection",
 				"type": "xsd:QName"
@@ -90,7 +90,7 @@
 		},
 		"rdt:l6": {
 			"name": "methods",
-			"version": "3.6.3",
+			"version": "4.0.1",
 			"prov:type": {
 				"$": "prov:Collection",
 				"type": "xsd:QName"
@@ -98,7 +98,7 @@
 		},
 		"rdt:l7": {
 			"name": "stats",
-			"version": "3.6.3",
+			"version": "4.0.1",
 			"prov:type": {
 				"$": "prov:Collection",
 				"type": "xsd:QName"
@@ -106,7 +106,7 @@
 		},
 		"rdt:l8": {
 			"name": "utils",
-			"version": "3.6.3",
+			"version": "4.0.1",
 			"prov:type": {
 				"$": "prov:Collection",
 				"type": "xsd:QName"

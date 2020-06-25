@@ -34,8 +34,8 @@
 		"rdt:p1": {
 			"rdt:name": "noDataNodes.R",
 			"rdt:type": "Start",
-			"rdt:elapsedTime": "0.777",
-			"rdt:scriptNum": "NA",
+			"rdt:elapsedTime": "1.011",
+			"rdt:scriptNum": 1,
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
 			"rdt:endLine": "NA",
@@ -44,7 +44,7 @@
 		"rdt:p2": {
 			"rdt:name": "library(utils)",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.129",
+			"rdt:elapsedTime": "0.19",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 1,
 			"rdt:startCol": 1,
@@ -54,7 +54,7 @@
 		"rdt:p3": {
 			"rdt:name": "library(testthat)",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.173",
+			"rdt:elapsedTime": "0.178",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 2,
 			"rdt:startCol": 1,
@@ -65,7 +65,7 @@
 			"rdt:name": "noDataNodes.R",
 			"rdt:type": "Finish",
 			"rdt:elapsedTime": "0.005",
-			"rdt:scriptNum": "NA",
+			"rdt:scriptNum": 1,
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
 			"rdt:endLine": "NA",
@@ -77,23 +77,23 @@
 		"rdt:environment": {
 			"rdt:name": "environment",
 			"rdt:architecture": "x86_64",
-			"rdt:operatingSystem": "darwin15.6.0",
+			"rdt:operatingSystem": "darwin17.0",
 			"rdt:language": "R",
-			"rdt:langVersion": "R version 3.6.3 (2020-02-29)",
+			"rdt:langVersion": "R version 4.0.1 (2020-06-06)",
 			"rdt:script": "/Users/rosesheehan/Desktop/CompSci/provSummer/provAnalyzeR/inst/testscripts/noDataNodes.R",
 			"rdt:scriptTimeStamp": "2020-05-28T14.32.49CDT",
-			"rdt:totalElapsedTime": "1.084",
+			"rdt:totalElapsedTime": "1.384",
 			"rdt:sourcedScripts": "",
 			"rdt:sourcedScriptTimeStamps": "",
 			"rdt:workingDirectory": "/Users/rosesheehan/Desktop/CompSci/provSummer/provAnalyzeR/inst",
 			"rdt:provDirectory": "/Users/rosesheehan/Desktop/CompSci/provSummer/provAnalyzeR/inst/testdata/prov_noDataNodes",
-			"rdt:provTimestamp": "2020-06-03T15.31.35CDT",
+			"rdt:provTimestamp": "2020-06-24T15.03.36CDT",
 			"rdt:hashAlgorithm": "md5"
 		},
 
 		"rdt:l1": {
 			"name": "base",
-			"version": "3.6.3",
+			"version": "4.0.1",
 			"prov:type": {
 				"$": "prov:Collection",
 				"type": "xsd:QName"
@@ -101,7 +101,7 @@
 		},
 		"rdt:l2": {
 			"name": "datasets",
-			"version": "3.6.3",
+			"version": "4.0.1",
 			"prov:type": {
 				"$": "prov:Collection",
 				"type": "xsd:QName"
@@ -109,7 +109,7 @@
 		},
 		"rdt:l3": {
 			"name": "ggplot2",
-			"version": "3.3.1",
+			"version": "3.3.2",
 			"prov:type": {
 				"$": "prov:Collection",
 				"type": "xsd:QName"
@@ -117,7 +117,7 @@
 		},
 		"rdt:l4": {
 			"name": "graphics",
-			"version": "3.6.3",
+			"version": "4.0.1",
 			"prov:type": {
 				"$": "prov:Collection",
 				"type": "xsd:QName"
@@ -125,7 +125,7 @@
 		},
 		"rdt:l5": {
 			"name": "grDevices",
-			"version": "3.6.3",
+			"version": "4.0.1",
 			"prov:type": {
 				"$": "prov:Collection",
 				"type": "xsd:QName"
@@ -133,7 +133,7 @@
 		},
 		"rdt:l6": {
 			"name": "methods",
-			"version": "3.6.3",
+			"version": "4.0.1",
 			"prov:type": {
 				"$": "prov:Collection",
 				"type": "xsd:QName"
@@ -141,7 +141,7 @@
 		},
 		"rdt:l7": {
 			"name": "stats",
-			"version": "3.6.3",
+			"version": "4.0.1",
 			"prov:type": {
 				"$": "prov:Collection",
 				"type": "xsd:QName"
@@ -157,7 +157,7 @@
 		},
 		"rdt:l9": {
 			"name": "utils",
-			"version": "3.6.3",
+			"version": "4.0.1",
 			"prov:type": {
 				"$": "prov:Collection",
 				"type": "xsd:QName"

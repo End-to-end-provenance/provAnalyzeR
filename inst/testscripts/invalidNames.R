@@ -1,13 +1,17 @@
-# one invalid name
+# all overwritten
+c <- 4
+t <- 3
+T <- "false"
+F <- "true"
+
+# reuse first value
 c <- 5
 
-
-# one invalid, one not invalid
+# one name overwitten, one not overwritten
 a <- "hello"
 t <- 8 + c
 
-
-# another invalid
+# another overwritten
 F <- "testing"
 
 # reuse first value

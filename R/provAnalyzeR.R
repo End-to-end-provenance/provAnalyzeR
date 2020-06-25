@@ -21,8 +21,9 @@ library(lintr)
 
 #' Provenance analysis functions
 #'
-#' prov.analyze uses the provenance from the last execution of prov.run and outputs
-#' a text analysis to the R console based on dynamic analysis.
+#' prov.analyze examines the provenance from the last execution of prov.run 
+#' and outputs a text summary of any coding anomalies to the console. If RStudio 
+#' is used, some output is also displayed in the markers pane. 
 #'
 #' These functions use provenance collected using the rdtLite or rdt packages.
 #'
@@ -30,9 +31,11 @@ library(lintr)
 #' \itemize{
 #'   \item The name of the script file executed
 #'   \item The names of any variables used but not set in the current session
-#'   \item Any variables assigned to reserved values c, t, T, or F
+#'   \item Any variables assigned to c, t, T, or F (values used by R)
 #'   \item Any variable type changes that occurred
 #'   \item Any functions that were defined multiple times
+#'   \item The execution time recorded by provenance for each line of the script
+#'   \item Basic static analysis information collected by the lintr package 
 #' }
 #'
 #' Creating a zip file depends on a zip executable being on the search path.
@@ -40,14 +43,15 @@ library(lintr)
 #' a different name, set the value of the R_ZIPCMD environment variable.  This
 #' code has been tested with Unix zip and with 7-zip on Windows.
 #'
-#' @param save if true saves the analysis to the file prov-analyze.txt in the
+#' @param save if true, saves the analysis to the file prov-analyze.txt in the
 #' provenance directory
-#' @param create.zip if true all of the provenance data will be packaged up
+#' @param create.zip if true, all of the provenance data will be packaged up
 #'   into a zip file stored in the current working directory.
 #'
 #' @export
 #' @examples
 #' \dontrun{prov.analyze ()}
+#' 
 #' @rdname analyze
 prov.analyze <- function(save=FALSE, create.zip=FALSE) {
   # clear environment first
@@ -71,7 +75,8 @@ prov.analyze <- function(save=FALSE, create.zip=FALSE) {
 #' prov.analyze.file
 #' 
 #' prov.analyze.file reads a JSON file that contains provenance and outputs
-#' a text analysis to the R console based on dynamic analysis.
+#' a text summary of any coding anomalies to the console. If RStudio is used, 
+#' some output is also displayed in the markers pane. 
 #' 
 #' @param prov.file the path to the file containing provenance
 #'
@@ -80,6 +85,7 @@ prov.analyze <- function(save=FALSE, create.zip=FALSE) {
 #' \dontrun{
 #' testdata <- system.file("testdata", "prov.json", package = "provAnalyzeR")
 #' prov.analyze.file(testdata)}
+#' 
 #' @rdname analyze
 prov.analyze.file <- function(prov.file, save=FALSE, create.zip=FALSE)
 {
@@ -96,7 +102,8 @@ prov.analyze.file <- function(prov.file, save=FALSE, create.zip=FALSE)
 #' prov.analyze.run
 #'
 #' prov.analyze.run executes a script, collects provenance, and outputs a
-#' text summary of any coding anomalies to the console.
+#' text summary of any coding anomalies to the console. If RStudio is used, 
+#' some output is also displayed in the markers pane. 
 #'
 #' @param r.script the name of a file containing an R script
 #' @param ... extra parameters are passed to the provenance collector.  See rdt's prov.run function
@@ -107,6 +114,7 @@ prov.analyze.file <- function(prov.file, save=FALSE, create.zip=FALSE)
 #' \dontrun{
 #' testdata <- system.file("testscripts", "console.R", package = "provAnalzeR")
 #' prov.analyze.run (testdata)}
+#' 
 #' @rdname analyze
 prov.analyze.run <- function(r.script, save=FALSE, create.zip=FALSE, ...) {
   # clear environment first
@@ -328,7 +336,7 @@ generate.lintr.analysis <- function() {
                           undesirable_operator_linter,  # report use of undesirable operators
                           unneeded_concatenation_linter)  # report if c() used unnecessarily)
   
-    print(lint(script, linters=linters))
+    print(lint(script, linters = linters))
 }
 
 #' Generates markers for type changes in the markers pane of RStudio.

@@ -1,0 +1,13 @@
+POTENTIAL ANOMALIES DETECTED for invalidNames.R 
+
+PRE-EXISTING:
+None
+
+INVALID NAMES:
+Error in analyze.invalid.names() : 
+  object 'invalid.names.present' not found
+Calls: <Anonymous> ... generate.invalid.names.summary -> analyze.invalid.names
+In addition: Warning message:
+Unable to access the following files:
+/Users/rosesheehan/Desktop/CompSci/provSummer/provAnalyzeR/inst/testdata/prov_invalidNames/scripts/invalidNames.R 
+Execution halted

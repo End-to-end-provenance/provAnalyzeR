@@ -13,10 +13,10 @@ prov.analyze.file(prov.file, save = FALSE, create.zip = FALSE)
 prov.analyze.run(r.script, save = FALSE, create.zip = FALSE, ...)
 }
 \arguments{
-\item{save}{if true saves the analysis to the file prov-analyze.txt in the
+\item{save}{if true, saves the analysis to the file prov-analyze.txt in the
 provenance directory}
 
-\item{create.zip}{if true all of the provenance data will be packaged up
+\item{create.zip}{if true, all of the provenance data will be packaged up
 into a zip file stored in the current working directory.}
 
 \item{prov.file}{the path to the file containing provenance}
@@ -27,14 +27,17 @@ into a zip file stored in the current working directory.}
 or rdtLites's prov.run function for details.}
 }
 \description{
-prov.analyze uses the provenance from the last execution of prov.run and outputs
-a text analysis to the R console based on dynamic analysis.
+prov.analyze examines the provenance from the last execution of prov.run 
+and outputs a text summary of any coding anomalies to the console. If RStudio 
+is used, some output is also displayed in the markers pane.
 
 prov.analyze.file reads a JSON file that contains provenance and outputs
-a text analysis to the R console based on dynamic analysis.
+a text summary of any coding anomalies to the console. If RStudio is used, 
+some output is also displayed in the markers pane.
 
 prov.analyze.run executes a script, collects provenance, and outputs a
-text summary of any coding anomalies to the console.
+text summary of any coding anomalies to the console. If RStudio is used, 
+some output is also displayed in the markers pane.
 }
 \details{
 These functions use provenance collected using the rdtLite or rdt packages.
@@ -43,9 +46,11 @@ For provenance collected from executing a script file, the analysis identifies:
 \itemize{
   \item The name of the script file executed
   \item The names of any variables used but not set in the current session
-  \item Any variables assigned to reserved values c, t, T, or F
+  \item Any variables assigned to c, t, T, or F (values used by R)
   \item Any variable type changes that occurred
   \item Any functions that were defined multiple times
+  \item The execution time recorded by provenance for each line of the script
+  \item Basic static analysis information collected by the lintr package 
 }
 
 Creating a zip file depends on a zip executable being on the search path.
@@ -55,10 +60,13 @@ code has been tested with Unix zip and with 7-zip on Windows.
 }
 \examples{
 \dontrun{prov.analyze ()}
+
 \dontrun{
 testdata <- system.file("testdata", "prov.json", package = "provAnalyzeR")
 prov.analyze.file(testdata)}
+
 \dontrun{
 testdata <- system.file("testscripts", "console.R", package = "provAnalzeR")
 prov.analyze.run (testdata)}
+
 }

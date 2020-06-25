@@ -4,12 +4,23 @@ PRE-EXISTING:
 a 
 b 
 
+INVALID NAMES:
+None
+
 TYPE CHANGES:
 None
 
 FUNCTION REASSIGNMENTS:
 None
 
-Warning message:
-Unable to access the following files:
+Warning messages:
+1: Unable to access the following files:
 /Users/rosesheehan/Desktop/CompSci/provSummer/provAnalyzeR/inst/testdata/prov_console/scripts/ 
+2: `arrange_()` is deprecated as of dplyr 0.7.0.
+Please use `arrange()` instead.
+See vignette('programming') for more help
+This warning is displayed once every 8 hours.
+Call `lifecycle::last_warnings()` to see where this warning was generated. 
+3: In normalizePath(filename) : path[1]="": No such file or directory
+4: In file(con, "r") :
+  file("") only supports open = "w+" and open = "w+b": using the former

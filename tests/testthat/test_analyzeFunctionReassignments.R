@@ -24,7 +24,7 @@ get.expected <- function()
   
   # multiple function changes
   f <- data.frame(value = c("function() {...", "function() {...", "function() {..."),
-                  code = c('uselessFunction <- function() {\n  hello = 5\n}', 'uselessFunction <- function() {\n  hello = 5\n}', 'uselessFunction <- function() {\n  hello = 5\n}'),
+                  code = c('uselessFunction <- function() {\n  hello <- 5\n}', 'uselessFunction <- function() {\n  hello <- 5\n}', 'uselessFunction <- function() {\n  hello <- 5\n}'),
                   scriptNum = c(1,1,1),
                   startLine = c(32,36,40),
                   stringsAsFactors = FALSE)

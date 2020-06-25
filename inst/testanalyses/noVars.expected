@@ -3,16 +3,22 @@ POTENTIAL ANOMALIES DETECTED for noVars.R
 PRE-EXISTING:
 None
 
-run 6/3 3:08 pm
-There are no variables.
 INVALID NAMES:
-
-TYPE CHANGES:
 There are no variables.
+
+There are no variables.
+TYPE CHANGES:
 
 FUNCTION REASSIGNMENTS:
 There are no variables.
 
-Warning message:
-Unable to access the following files:
+Warning messages:
+1: Unable to access the following files:
 /Users/rosesheehan/Desktop/CompSci/provSummer/provAnalyzeR/inst/testdata/prov_noVars/scripts/noVars.R 
+2: `arrange_()` is deprecated as of dplyr 0.7.0.
+Please use `arrange()` instead.
+See vignette('programming') for more help
+This warning is displayed once every 8 hours.
+Call `lifecycle::last_warnings()` to see where this warning was generated. 
+3: In readLines(filename) :
+  incomplete final line found on '/Users/rosesheehan/Desktop/CompSci/provSummer/provAnalyzeR/inst/testscripts/noVars.R'

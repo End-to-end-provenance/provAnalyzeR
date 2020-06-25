@@ -34,8 +34,8 @@
 		"rdt:p1": {
 			"rdt:name": "functionReassignments.R",
 			"rdt:type": "Start",
-			"rdt:elapsedTime": "1.054",
-			"rdt:scriptNum": "NA",
+			"rdt:elapsedTime": "0.943",
+			"rdt:scriptNum": 1,
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
 			"rdt:endLine": "NA",
@@ -44,7 +44,7 @@
 		"rdt:p2": {
 			"rdt:name": "sum <- function(a, b) {\n  a + b\n}",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.207",
+			"rdt:elapsedTime": "0.168",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 3,
 			"rdt:startCol": 1,
@@ -54,7 +54,7 @@
 		"rdt:p3": {
 			"rdt:name": "sum_1 <- sum(5, 2)",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.144",
+			"rdt:elapsedTime": "0.138",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 7,
 			"rdt:startCol": 1,
@@ -64,7 +64,7 @@
 		"rdt:p4": {
 			"rdt:name": "sum <- function (cc, d) {\n  cc * d\n}",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.114",
+			"rdt:elapsedTime": "0.112",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 9,
 			"rdt:startCol": 1,
@@ -74,7 +74,7 @@
 		"rdt:p5": {
 			"rdt:name": "sum_2 <- sum(5, 2)",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.111",
+			"rdt:elapsedTime": "0.103",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 13,
 			"rdt:startCol": 1,
@@ -84,7 +84,7 @@
 		"rdt:p6": {
 			"rdt:name": "divide <- function(a, b) {\n  a / b\n}",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.115",
+			"rdt:elapsedTime": "0.108",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 18,
 			"rdt:startCol": 1,
@@ -94,7 +94,7 @@
 		"rdt:p7": {
 			"rdt:name": "divide_1 <- divide(5, 2)",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.116",
+			"rdt:elapsedTime": "0.104",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 22,
 			"rdt:startCol": 1,
@@ -104,7 +104,7 @@
 		"rdt:p8": {
 			"rdt:name": "divide <- function(a, b) {\n  a / b\n}",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.111",
+			"rdt:elapsedTime": "0.107",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 24,
 			"rdt:startCol": 1,
@@ -114,7 +114,7 @@
 		"rdt:p9": {
 			"rdt:name": "divide_2 <- divide(5, 2)",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.112",
+			"rdt:elapsedTime": "0.106",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 28,
 			"rdt:startCol": 1,
@@ -122,9 +122,9 @@
 			"rdt:endCol": 24
 		},
 		"rdt:p10": {
-			"rdt:name": "uselessFunction <- function() {\n  hello = 5\n}",
+			"rdt:name": "uselessFunction <- function() {\n  hello <- 5\n}",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.112",
+			"rdt:elapsedTime": "0.105",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 32,
 			"rdt:startCol": 1,
@@ -132,9 +132,9 @@
 			"rdt:endCol": 1
 		},
 		"rdt:p11": {
-			"rdt:name": "uselessFunction <- function() {\n  hello = 5\n}",
+			"rdt:name": "uselessFunction <- function() {\n  hello <- 5\n}",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.112",
+			"rdt:elapsedTime": "0.103",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 36,
 			"rdt:startCol": 1,
@@ -142,9 +142,9 @@
 			"rdt:endCol": 1
 		},
 		"rdt:p12": {
-			"rdt:name": "uselessFunction <- function() {\n  hello = 5\n}",
+			"rdt:name": "uselessFunction <- function() {\n  hello <- 5\n}",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.112",
+			"rdt:elapsedTime": "0.102",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 40,
 			"rdt:startCol": 1,
@@ -154,8 +154,8 @@
 		"rdt:p13": {
 			"rdt:name": "functionReassignments.R",
 			"rdt:type": "Finish",
-			"rdt:elapsedTime": "0.005",
-			"rdt:scriptNum": "NA",
+			"rdt:elapsedTime": "0.004",
+			"rdt:scriptNum": 1,
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
 			"rdt:endLine": "NA",
@@ -289,23 +289,23 @@
 		"rdt:environment": {
 			"rdt:name": "environment",
 			"rdt:architecture": "x86_64",
-			"rdt:operatingSystem": "darwin15.6.0",
+			"rdt:operatingSystem": "darwin17.0",
 			"rdt:language": "R",
-			"rdt:langVersion": "R version 3.6.3 (2020-02-29)",
+			"rdt:langVersion": "R version 4.0.1 (2020-06-06)",
 			"rdt:script": "/Users/rosesheehan/Desktop/CompSci/provSummer/provAnalyzeR/inst/testscripts/functionReassignments.R",
-			"rdt:scriptTimeStamp": "2020-05-31T21.13.33CDT",
-			"rdt:totalElapsedTime": "2.425",
+			"rdt:scriptTimeStamp": "2020-06-21T21.36.23CDT",
+			"rdt:totalElapsedTime": "2.203",
 			"rdt:sourcedScripts": "",
 			"rdt:sourcedScriptTimeStamps": "",
 			"rdt:workingDirectory": "/Users/rosesheehan/Desktop/CompSci/provSummer/provAnalyzeR/inst",
 			"rdt:provDirectory": "/Users/rosesheehan/Desktop/CompSci/provSummer/provAnalyzeR/inst/testdata/prov_functionReassignments",
-			"rdt:provTimestamp": "2020-06-01T10.16.50CDT",
+			"rdt:provTimestamp": "2020-06-24T15.05.36CDT",
 			"rdt:hashAlgorithm": "md5"
 		},
 
 		"rdt:l1": {
 			"name": "base",
-			"version": "3.6.3",
+			"version": "4.0.1",
 			"prov:type": {
 				"$": "prov:Collection",
 				"type": "xsd:QName"
@@ -313,7 +313,7 @@
 		},
 		"rdt:l2": {
 			"name": "datasets",
-			"version": "3.6.3",
+			"version": "4.0.1",
 			"prov:type": {
 				"$": "prov:Collection",
 				"type": "xsd:QName"
@@ -321,7 +321,7 @@
 		},
 		"rdt:l3": {
 			"name": "ggplot2",
-			"version": "3.3.1",
+			"version": "3.3.2",
 			"prov:type": {
 				"$": "prov:Collection",
 				"type": "xsd:QName"
@@ -329,7 +329,7 @@
 		},
 		"rdt:l4": {
 			"name": "graphics",
-			"version": "3.6.3",
+			"version": "4.0.1",
 			"prov:type": {
 				"$": "prov:Collection",
 				"type": "xsd:QName"
@@ -337,7 +337,7 @@
 		},
 		"rdt:l5": {
 			"name": "grDevices",
-			"version": "3.6.3",
+			"version": "4.0.1",
 			"prov:type": {
 				"$": "prov:Collection",
 				"type": "xsd:QName"
@@ -345,7 +345,7 @@
 		},
 		"rdt:l6": {
 			"name": "methods",
-			"version": "3.6.3",
+			"version": "4.0.1",
 			"prov:type": {
 				"$": "prov:Collection",
 				"type": "xsd:QName"
@@ -353,7 +353,7 @@
 		},
 		"rdt:l7": {
 			"name": "stats",
-			"version": "3.6.3",
+			"version": "4.0.1",
 			"prov:type": {
 				"$": "prov:Collection",
 				"type": "xsd:QName"
@@ -361,7 +361,7 @@
 		},
 		"rdt:l8": {
 			"name": "utils",
-			"version": "3.6.3",
+			"version": "4.0.1",
 			"prov:type": {
 				"$": "prov:Collection",
 				"type": "xsd:QName"
