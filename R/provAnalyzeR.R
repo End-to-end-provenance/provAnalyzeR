@@ -46,14 +46,28 @@ library(lintr)
 #' @param save if true, saves the analysis to the file prov-analyze.txt in the
 #' provenance directory
 #' @param create.zip if true, all of the provenance data will be packaged up
-#'   into a zip file stored in the current working directory.
+#' into a zip file stored in the current working directory.
+#' @param type.changes if true, analysis of any type changes will be printed.
+#' @param elapsed.time if true, line by line graph of execution time will be 
+#' displayed.
+#' @param invalid.names if true, any variable names that overwrite common base R 
+#' values will be printed. Currently, these are: c, t, T, F.
+#' @param function.reassignments if true, any location where a function name
+#' is reused will be printed.
+#' @param preexisting.vars if true, any variables that were set outside of the
+#' script will be printed.
+#' @param lintr if true, relevant lintr analysis will be performed and 
+#' displayed.
 #'
 #' @export
 #' @examples
 #' \dontrun{prov.analyze ()}
 #' 
 #' @rdname analyze
-prov.analyze <- function(save=FALSE, create.zip=FALSE) {
+prov.analyze <- function(save=FALSE, create.zip=FALSE, type.changes=TRUE, 
+                         elapsed.time=TRUE, invalid.names=TRUE, 
+                         function.reassignments=TRUE,
+                         preexisting.vars=TRUE, lintr=TRUE) {
   # clear environment first
   .clear()
   
@@ -69,7 +83,10 @@ prov.analyze <- function(save=FALSE, create.zip=FALSE) {
   .analyze.init(prov.json(), is.file = FALSE)
 
   # create the analysis summary
-  analyze.prov.summary(save, create.zip)
+  analyze.prov.summary(save, create.zip, type.changes, 
+                       elapsed.time, invalid.names, 
+                       function.reassignments,
+                       preexisting.vars, lintr)
 }
 
 #' prov.analyze.file
@@ -87,7 +104,11 @@ prov.analyze <- function(save=FALSE, create.zip=FALSE) {
 #' prov.analyze.file(testdata)}
 #' 
 #' @rdname analyze
-prov.analyze.file <- function(prov.file, save=FALSE, create.zip=FALSE)
+prov.analyze.file <- function(prov.file, save=FALSE, create.zip=FALSE,
+                              type.changes=TRUE, 
+                              elapsed.time=TRUE, invalid.names=TRUE, 
+                              function.reassignments=TRUE,
+                              preexisting.vars=TRUE, lintr=TRUE)
 {
   # clear environment first
   .clear()
@@ -96,7 +117,10 @@ prov.analyze.file <- function(prov.file, save=FALSE, create.zip=FALSE)
   .analyze.init(prov.file, is.file = TRUE)
   
   # create the analysis summary
-  analyze.prov.summary (save, create.zip)
+  analyze.prov.summary (save, create.zip, type.changes, 
+                        elapsed.time, invalid.names, 
+                        function.reassignments,
+                        preexisting.vars, lintr)
 }
 
 #' prov.analyze.run
@@ -116,7 +140,12 @@ prov.analyze.file <- function(prov.file, save=FALSE, create.zip=FALSE)
 #' prov.analyze.run (testdata)}
 #' 
 #' @rdname analyze
-prov.analyze.run <- function(r.script, save=FALSE, create.zip=FALSE, ...) {
+prov.analyze.run <- function(r.script, save=FALSE, create.zip=FALSE, 
+                             type.changes=TRUE, 
+                             elapsed.time=TRUE, invalid.names=TRUE, 
+                             function.reassignments=TRUE,
+                             preexisting.vars=TRUE, lintr=TRUE, 
+                             ...) {
   # clear environment first
   .clear()
   
@@ -139,7 +168,10 @@ prov.analyze.run <- function(r.script, save=FALSE, create.zip=FALSE, ...) {
   .analyze.init(prov.json(), is.file = FALSE)
   
   # Create the provenance summary
-  analyze.prov.summary (save, create.zip)
+  analyze.prov.summary (save, create.zip, type.changes, 
+                        elapsed.time, invalid.names, 
+                        function.reassignments,
+                        preexisting.vars, lintr)
 }
 
 #' analyze.prov.summary summarizes course-grained coding anomolies found in the provenance.
@@ -151,14 +183,20 @@ prov.analyze.run <- function(r.script, save=FALSE, create.zip=FALSE, ...) {
 #'   into a zip file stored in the current working directory.
 #'   
 #' @noRd
-analyze.prov.summary <- function(save, create.zip) {
+analyze.prov.summary <- function(save, create.zip, type.changes, 
+                                 elapsed.time, invalid.names, 
+                                 function.reassignments,
+                                 preexisting.vars, lintr) {
   environment <- provParseR::get.environment(.analyze.env$prov)
   
   if (save) {
     save.to.text.file(environment)
   }
   else {
-    generate.summaries(environment)
+    generate.summaries(environment, type.changes, 
+                       elapsed.time, invalid.names, 
+                       function.reassignments,
+                       preexisting.vars, lintr)
   }
   
   if (create.zip) {
@@ -173,7 +211,10 @@ analyze.prov.summary <- function(save, create.zip) {
 #' 
 #' @param environment the environemnt data frame extracted from the provenance
 #' @noRd
-generate.summaries <- function(environment) {
+generate.summaries <- function(environment, type.changes, 
+                               elapsed.time, invalid.names, 
+                               function.reassignments,
+                               preexisting.vars, lintr) {
   # get file name
   script.path <- environment[environment$label == "script", ]$value
   script.file <- sub(".*/", "", script.path)
@@ -185,14 +226,20 @@ generate.summaries <- function(environment) {
   }
   
   # dynamic anlaysis summaries
-  generate.preexisting.summary(provParseR::get.preexisting(.analyze.env$prov)) 
-  generate.invalid.names.summary()
-  generate.type.changes.summary()
-  generate.function.reassignments.summary()
-  generate.elapsed.time.summary()
+  if (preexisting.vars) 
+    generate.preexisting.summary(provParseR::get.preexisting(.analyze.env$prov)) 
+  if (invalid.names)
+    generate.invalid.names.summary()
+  if (type.changes)
+    generate.type.changes.summary()
+  if (function.reassignments)
+    generate.function.reassignments.summary()
+  if (elapsed.time)
+    generate.elapsed.time.summary()
   
   # run lintr static analysis
-  generate.lintr.analysis()
+  if (lintr)
+    generate.lintr.analysis()
 }
 
 #' generate.preexisting.summary lists variables in the global environment that are 
@@ -251,7 +298,9 @@ generate.type.changes.summary <- function(vars = NA) {
   }
   else if(!is.null(type.changes)) {
     # generate markers
-    create.markers(type.changes, "info")
+    if (rstudioapi::isAvailable()) {
+      create.markers(type.changes, "info")
+    }
 
     # print to console
     .generate.type.changes.helper(type.changes)
@@ -356,7 +405,7 @@ create.markers <- function(changes.list, type) {
     var <- changes.list[[i]]
     
     markers <- lapply(c(2:nrow(var)), function(j) {
-      # generate message
+      # build part of message
       message <- "Change to"
       # if there were container changes, add to message
       if (.are.changes("c", var$changes[j]))
@@ -388,6 +437,7 @@ create.markers <- function(changes.list, type) {
   # combine lists into one list
   markers <- unlist(markers, recursive = FALSE)
 
+  # generate markers
   if (rstudioapi::isAvailable()) {
     rstudioapi::callFun("sourceMarkers",
                         name = "type changes",
@@ -482,9 +532,9 @@ create.markers <- function(changes.list, type) {
       var$code[j] <- gsub("\n", "\n\t\t", var$code[j])
       
       if (nchar(var$code[j]) > 50)
-        cat(paste("\t\tcode excerpt:\n\t\t", substring(var$code[j], 1, 47), "...\n"))
+        cat(paste("\t\tcode excerpt:\n\t\t", substring(var$code[j], 1, 47), "...\n", sep = ""))
       else
-        cat(paste("\t\tcode excerpt:\n\t\t", var$code[j], "\n"))
+        cat(paste("\t\tcode excerpt:\n\t\t", var$code[j], "\n", sep = ""))
     })
   })
 }

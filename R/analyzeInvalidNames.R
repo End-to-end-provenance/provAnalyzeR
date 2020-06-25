@@ -103,6 +103,9 @@ analyze.invalid.names <- function(var = NA)
     invalid.names.present <- invalid.names[-remove.indices]
     vars <- vars[-remove.indices]
   }
+  else {
+    invalid.names.present <- invalid.names
+  }
   
   # no naming issues occured, return
   if(length(vars) == 0) {
