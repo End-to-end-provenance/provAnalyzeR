@@ -6,41 +6,11 @@
 \alias{prov.analyze.run}
 \title{Provenance analysis functions}
 \usage{
-prov.analyze(
-  save = FALSE,
-  create.zip = FALSE,
-  type.changes = TRUE,
-  elapsed.time = TRUE,
-  invalid.names = TRUE,
-  function.reassignments = TRUE,
-  preexisting.vars = TRUE,
-  lintr = TRUE
-)
+prov.analyze(save = FALSE, create.zip = FALSE)
 
-prov.analyze.file(
-  prov.file,
-  save = FALSE,
-  create.zip = FALSE,
-  type.changes = TRUE,
-  elapsed.time = TRUE,
-  invalid.names = TRUE,
-  function.reassignments = TRUE,
-  preexisting.vars = TRUE,
-  lintr = TRUE
-)
+prov.analyze.file(prov.file, save = FALSE, create.zip = FALSE)
 
-prov.analyze.run(
-  r.script,
-  save = FALSE,
-  create.zip = FALSE,
-  type.changes = TRUE,
-  elapsed.time = TRUE,
-  invalid.names = TRUE,
-  function.reassignments = TRUE,
-  preexisting.vars = TRUE,
-  lintr = TRUE,
-  ...
-)
+prov.analyze.run(r.script, save = FALSE, create.zip = FALSE, ...)
 }
 \arguments{
 \item{save}{if true, saves the analysis to the file prov-analyze.txt in the
@@ -48,23 +18,6 @@ provenance directory}
 
 \item{create.zip}{if true, all of the provenance data will be packaged up
 into a zip file stored in the current working directory.}
-
-\item{type.changes}{if true, analysis of any type changes will be printed.}
-
-\item{elapsed.time}{if true, line by line graph of execution time will be 
-displayed.}
-
-\item{invalid.names}{if true, any variable names that overwrite common base R 
-values will be printed. Currently, these are: c, t, T, F.}
-
-\item{function.reassignments}{if true, any location where a function name
-is reused will be printed.}
-
-\item{preexisting.vars}{if true, any variables that were set outside of the
-script will be printed.}
-
-\item{lintr}{if true, relevant lintr analysis will be performed and 
-displayed.}
 
 \item{prov.file}{the path to the file containing provenance}
 

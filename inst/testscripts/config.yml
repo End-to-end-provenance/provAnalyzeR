@@ -1,0 +1,3 @@
+default:
+  type.changes = FALSE
+  invalid.names = TRUE
