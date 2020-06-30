@@ -34,7 +34,7 @@
 		"rdt:p1": {
 			"rdt:name": "exceptions.R",
 			"rdt:type": "Start",
-			"rdt:elapsedTime": "0.903",
+			"rdt:elapsedTime": "0.919",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -44,7 +44,7 @@
 		"rdt:p2": {
 			"rdt:name": "library(rdtLite)",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.173",
+			"rdt:elapsedTime": "0.169",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 1,
 			"rdt:startCol": 1,
@@ -54,7 +54,7 @@
 		"rdt:p3": {
 			"rdt:name": "col1 <- c(1:11)",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.128",
+			"rdt:elapsedTime": "0.117",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 3,
 			"rdt:startCol": 1,
@@ -64,7 +64,7 @@
 		"rdt:p4": {
 			"rdt:name": "source_warning.r",
 			"rdt:type": "Start",
-			"rdt:elapsedTime": "0.063",
+			"rdt:elapsedTime": "0.052",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -74,7 +74,7 @@
 		"rdt:p5": {
 			"rdt:name": "if(length(col1) > 10) {\n  col1 <- c(1:10)\n  warning(\"length ",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.116",
+			"rdt:elapsedTime": "0.083",
 			"rdt:scriptNum": 2,
 			"rdt:startLine": 1,
 			"rdt:startCol": 1,
@@ -84,7 +84,7 @@
 		"rdt:p6": {
 			"rdt:name": "warning(\"another warning thrown\")",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.128",
+			"rdt:elapsedTime": "0.101",
 			"rdt:scriptNum": 2,
 			"rdt:startLine": 6,
 			"rdt:startCol": 1,
@@ -94,7 +94,7 @@
 		"rdt:p7": {
 			"rdt:name": "source_warning.r",
 			"rdt:type": "Finish",
-			"rdt:elapsedTime": "0.006",
+			"rdt:elapsedTime": "0.004",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -104,7 +104,7 @@
 		"rdt:p8": {
 			"rdt:name": "source_error.r",
 			"rdt:type": "Start",
-			"rdt:elapsedTime": "0.147",
+			"rdt:elapsedTime": "0.12",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -114,7 +114,7 @@
 		"rdt:p9": {
 			"rdt:name": "get.error.df <- function()\n{\n  col2 <- rep(c(\"ll\",12,13,14,1",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.099",
+			"rdt:elapsedTime": "0.089",
 			"rdt:scriptNum": 3,
 			"rdt:startLine": 1,
 			"rdt:startCol": 1,
@@ -124,7 +124,7 @@
 		"rdt:p10": {
 			"rdt:name": "df <- cbind(col1, get.error.df(), stringsAsFactors=FALSE)",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.102",
+			"rdt:elapsedTime": "0.088",
 			"rdt:scriptNum": 3,
 			"rdt:startLine": 8,
 			"rdt:startCol": 1,
@@ -134,7 +134,7 @@
 		"rdt:p11": {
 			"rdt:name": "sum(df, col1)",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.018",
+			"rdt:elapsedTime": "0.015",
 			"rdt:scriptNum": 3,
 			"rdt:startLine": 10,
 			"rdt:startCol": 1,
@@ -144,7 +144,7 @@
 		"rdt:p12": {
 			"rdt:name": "source_error.r",
 			"rdt:type": "Finish",
-			"rdt:elapsedTime": "0.201",
+			"rdt:elapsedTime": "0.185",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -250,7 +250,7 @@
 			"rdt:langVersion": "R version 4.0.1 (2020-06-06)",
 			"rdt:script": "/Users/rosesheehan/Desktop/CompSci/provSummer/provAnalyzeR/inst/testscripts/exceptions.R",
 			"rdt:scriptTimeStamp": "2020-05-29T09.47.42CDT",
-			"rdt:totalElapsedTime": "2.084",
+			"rdt:totalElapsedTime": "1.942",
 			"rdt:sourcedScripts": [
 				"/Users/rosesheehan/Desktop/CompSci/provSummer/provAnalyzeR/inst/testscripts/source_warning.R",
 				"/Users/rosesheehan/Desktop/CompSci/provSummer/provAnalyzeR/inst/testscripts/source_error.R"
@@ -261,7 +261,7 @@
 			],
 			"rdt:workingDirectory": "/Users/rosesheehan/Desktop/CompSci/provSummer/provAnalyzeR/inst",
 			"rdt:provDirectory": "/Users/rosesheehan/Desktop/CompSci/provSummer/provAnalyzeR/inst/testdata/prov_exceptions",
-			"rdt:provTimestamp": "2020-06-24T15.05.18CDT",
+			"rdt:provTimestamp": "2020-06-30T09.55.11CDT",
 			"rdt:hashAlgorithm": "md5"
 		},
 

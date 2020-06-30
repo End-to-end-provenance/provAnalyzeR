@@ -455,9 +455,18 @@ create.markers <- function(changes.list, type) {
   lapply(c(1:length(type.changes)), function(i) {
     var <- type.changes[[i]]
     
-    cat(paste("The type of variable ", names(type.changes[i]), " has changed. ",
+    # TODO
+    # if the variable is from the environment, note this
+    # if (var$fromEnv[1] == TRUE) {
+    #   cat(paste("The type of variable ", names(type.changes[i]), " has changed. ",
+    #             names(type.changes[i]), " was declared before provenance 
+    #             collection began.", sep = ""))
+    # }
+    # else {
+      cat(paste("The type of variable ", names(type.changes[i]), " has changed. ",
               names(type.changes[i]), " was declared on line ", var$startLine[1],
               " in script ", var$scriptNum[1], ".\n", sep = ""))
+    # }
     
     lapply(c(2:nrow(var)), function(j) {
       cat(paste("\t", j-1, ": Script ", var$scriptNum[j], ", line ", 
@@ -479,8 +488,8 @@ create.markers <- function(changes.list, type) {
       
       # if there were type changes, print
       if (.are.changes("t", var$changes[j])) {
-        cat(paste("\t\ttype changed to: ", var$type[j],
-                  "\n\t\tfrom:\t\t", " ", var$type[j-1], "\n",
+        cat(paste("\t\telement type changed to: ", var$type[j],
+                  "\n\t\tfrom:\t\t\t", " ", var$type[j-1], "\n",
                   sep = ""))
       }
       

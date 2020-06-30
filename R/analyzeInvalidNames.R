@@ -85,12 +85,12 @@ analyze.invalid.names <- function(var = NA)
   
   vars <- lapply(c(1:length(invalid.names)), function(i)
   {
-    
+    # TODO clean this up since we only care about the first declaration
     if (invalid.names[i] %in% vars.names) {
       # get all data nodes with that name
       invalid.nodes <- data.nodes[data.nodes$name == invalid.names[i], ]
       
-      return(.get.output.invalid.names(invalid.nodes))
+      return(.get.first.node(invalid.nodes))
     }
     else {
       remove.indices <<- append(remove.indices, i)
@@ -150,35 +150,26 @@ analyze.invalid.names <- function(var = NA)
 #' @return The data frame of type changes to be returned to the user.
 #'         columns: value, container, dimension, type, code, scriptNum, startLine
 #' @noRd
-.get.output.invalid.names <- function(data.nodes)
+.get.first.node <- function(data.nodes)
 {
-  # script num, line num, full code, value, valType
-  # for each data node (row), get required fields for output
-  rows <- lapply(c(1:nrow(data.nodes)), function(i)
-  {
-    # from data nodes (parameter), extract id, value
-    data.id <- data.nodes$id[i]
-    data.value <- data.nodes$value[i]
-    
-    # get valType columns (remove id column)
-    val.type <- provParseR::get.val.type(.analyze.env$prov, node.id = data.id)
-    val.type <- val.type[ , c("container", "dimension", "type")]
-    
-    # get proc node which either set or first used the data node
-    proc.id <- .get.p.id(data.id)[1]
-    
-    # extract script num, line num, code from proc nodes
-    proc.fields <- .analyze.env$proc.nodes[.analyze.env$proc.nodes$id == proc.id, 
-                                           c("name", "scriptNum", "startLine")]
-    
-    # combine fields
-    fields <- cbind(data.value, val.type, proc.fields, stringsAsFactors = FALSE)
-    names(fields) <- c("value", 
-                       "container", "dimension", "type", 
-                       "code", "scriptNum", "startLine")
-    return(fields)
-  })
+  # script num, line num, value
+  # for the declaration node
   
-  return(.form.df(rows))
+  # from data nodes (parameter), extract id, value
+  data.id <- data.nodes$id[1]
+  data.value <- data.nodes$value[1]
+  
+  # get proc node which either set or first used the data node
+  proc.id <- .get.p.id(data.id)[1]
+  
+  # extract script num, line num from proc nodes
+  proc.fields <- .analyze.env$proc.nodes[.analyze.env$proc.nodes$id == proc.id, 
+                                         c("scriptNum", "startLine")]
+  
+  # combine fields
+  fields <- cbind(data.value, proc.fields, stringsAsFactors = FALSE)
+  names(fields) <- c("value", "scriptNum", "startLine")
+
+  return(fields)
 }
 

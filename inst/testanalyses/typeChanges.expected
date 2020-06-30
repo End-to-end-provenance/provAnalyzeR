@@ -59,6 +59,15 @@ The type of variable s has changed. s was declared on line 38 in script 1.
 		type changed to: POSIXct
 		from:		 factor
 		code excerpt: s <- as.POSIXct("080406 10:11", tz = "UTC", for ...
+The type of variable v has changed. v was declared on line 45 in script 1.
+	1: Script 1, line 46
+		container changed to: data_frame
+		from:		      vector
+		dimension changed to: 5,2
+		from:		      1
+		type changed to: integer, integer
+		from:		 numeric
+		code excerpt: v <- as.data.frame(matrix(c(1:10), 5)) 
 
 FUNCTION REASSIGNMENTS:
 None

@@ -59,8 +59,7 @@ analyze.elapsed.time <- function()
     if (!(elapsed.nodes$name[i] == names[i]))
       names[i] <<- paste(names[i], "...")
   })
- 
-  # create bar chart
+  
   fig <- plotly::plot_ly(
     data = elapsed.nodes,
     x = ~elapsedTime,
@@ -71,18 +70,13 @@ analyze.elapsed.time <- function()
     orientation = 'h'
   )
   
-  # fig <- layout(
-  #   fig,
-  #   title = 'Elapsed Time by Line',
-    # xaxis = list(
-    #   type = 'category',
-    #   title = 'Elapsed Time (s)'
-    # ),
-    # yaxis = list(
-    #   title = 'Start Line',
-    #   tickmode = "linear"
-    # )
-  # )
+  fig <- plotly::layout(
+   fig,
+   title = "Elapsed Time by Line",
+   xaxis = list(title = "Elapsed Time (s)"),
+   yaxis = list(title = "Start Line")
+  )
+
   
   print(fig)
 

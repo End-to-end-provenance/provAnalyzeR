@@ -34,7 +34,7 @@
 		"rdt:p1": {
 			"rdt:name": "noVars.R",
 			"rdt:type": "Start",
-			"rdt:elapsedTime": "0.979",
+			"rdt:elapsedTime": "0.994",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -44,7 +44,7 @@
 		"rdt:p2": {
 			"rdt:name": "print(\"Case:\")",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.172",
+			"rdt:elapsedTime": "0.133",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 1,
 			"rdt:startCol": 1,
@@ -54,7 +54,7 @@
 		"rdt:p3": {
 			"rdt:name": "print(\"No variables\")",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.128",
+			"rdt:elapsedTime": "0.139",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 2,
 			"rdt:startCol": 1,
@@ -64,7 +64,7 @@
 		"rdt:p4": {
 			"rdt:name": "noVars.R",
 			"rdt:type": "Finish",
-			"rdt:elapsedTime": "0.005",
+			"rdt:elapsedTime": "0.004",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -105,12 +105,12 @@
 			"rdt:langVersion": "R version 4.0.1 (2020-06-06)",
 			"rdt:script": "/Users/rosesheehan/Desktop/CompSci/provSummer/provAnalyzeR/inst/testscripts/noVars.R",
 			"rdt:scriptTimeStamp": "2020-05-28T14.44.16CDT",
-			"rdt:totalElapsedTime": "1.284",
+			"rdt:totalElapsedTime": "1.27",
 			"rdt:sourcedScripts": "",
 			"rdt:sourcedScriptTimeStamps": "",
 			"rdt:workingDirectory": "/Users/rosesheehan/Desktop/CompSci/provSummer/provAnalyzeR/inst",
 			"rdt:provDirectory": "/Users/rosesheehan/Desktop/CompSci/provSummer/provAnalyzeR/inst/testdata/prov_noVars",
-			"rdt:provTimestamp": "2020-06-24T15.04.25CDT",
+			"rdt:provTimestamp": "2020-06-30T09.55.03CDT",
 			"rdt:hashAlgorithm": "md5"
 		},
 

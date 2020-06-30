@@ -17,6 +17,7 @@ get.expected <- function()
                   dimension = as.character(c(1,1)),
                   type = c("numeric", NA),
                   changes = c("NA", "ct"),
+                  fromEnv = c(FALSE, FALSE),
                   stringsAsFactors = FALSE)
   
   # dimension change
@@ -28,6 +29,7 @@ get.expected <- function()
                   dimension = c("4,25", "5,20"),
                   type = c("integer", "integer"),
                   changes = c("NA", "d"),
+                  fromEnv = c(FALSE, FALSE),
                   stringsAsFactors = FALSE)
   
   # type change
@@ -39,6 +41,7 @@ get.expected <- function()
                   dimension = as.character(c(1,1)),
                   type = c("numeric", "integer"),
                   changes = c("NA", "t"),
+                  fromEnv = c(FALSE, FALSE),
                   stringsAsFactors = FALSE)
   
   # multiple valType changes in sequence
@@ -50,6 +53,7 @@ get.expected <- function()
                   dimension = as.character(c(1,1,1)),
                   type = c("numeric", "character", "logical"),
                   changes = c("NA", "t", "t"),
+                  fromEnv = c(FALSE, FALSE, FALSE),
                   stringsAsFactors = FALSE)
   
   # multiple valType changes, with no type changes
@@ -61,6 +65,7 @@ get.expected <- function()
                   dimension = as.character(c(1,1,1)),
                   type = c("logical", "character", "integer"),
                   changes = c("NA", "t", "t"),
+                  fromEnv = c(FALSE, FALSE, FALSE),
                   stringsAsFactors = FALSE)
   
   # special data types
@@ -71,11 +76,24 @@ get.expected <- function()
                   dimension = as.character(c(NA,NA,NA,NA,NA)),
                   type = c('null', 'environment', 'function', 'factor', 'POSIXct'),
                   changes = c("NA", "t", "t", "t", "t"),
+                  fromEnv = c(FALSE, FALSE, FALSE, FALSE, FALSE),
+                  stringsAsFactors = FALSE)
+  
+  # container, dimension, and type change
+  # omit value due to length
+  v <- data.frame(code = c('v <- 5', 'v <- as.data.frame(matrix(c(1:10), 5))'),
+                  scriptNum = c(1,1),
+                  startLine = c(45,46),
+                  container = c("vector", "data_frame"),
+                  dimension = c("1", "5,2"),
+                  type = c("numeric", "integer, integer"),
+                  changes = c("NA", "cdt"),
+                  fromEnv = c(FALSE, FALSE),
                   stringsAsFactors = FALSE)
   
   # combine
-  type.changes <- list(d,e,f,g,h,s)
-  names(type.changes) <- c("d", "e", "f", "g", "h", "s")
+  type.changes <- list(d,e,f,g,h,s,v)
+  names(type.changes) <- c("d", "e", "f", "g", "h", "s", "v")
   
   return(type.changes)
 }
@@ -143,6 +161,7 @@ test_that("analyze.type.changes - no parameters",
             c1 <- analyze.type.changes()
             c1$e <- c1$e[ ,-1]          # omit value column
             c1$s <- c1$s[ , c(-1,-2)]   # omit value and code column
+            c1$v <- c1$v[ ,-1]          # omit value column
 
             expect_equivalent(c1, expected)
           })

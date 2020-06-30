@@ -34,7 +34,7 @@
 		"rdt:p1": {
 			"rdt:name": "functionReassignments.R",
 			"rdt:type": "Start",
-			"rdt:elapsedTime": "0.943",
+			"rdt:elapsedTime": "0.862",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -44,7 +44,7 @@
 		"rdt:p2": {
 			"rdt:name": "sum <- function(a, b) {\n  a + b\n}",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.168",
+			"rdt:elapsedTime": "0.154",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 3,
 			"rdt:startCol": 1,
@@ -54,7 +54,7 @@
 		"rdt:p3": {
 			"rdt:name": "sum_1 <- sum(5, 2)",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.138",
+			"rdt:elapsedTime": "0.116",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 7,
 			"rdt:startCol": 1,
@@ -64,7 +64,7 @@
 		"rdt:p4": {
 			"rdt:name": "sum <- function (cc, d) {\n  cc * d\n}",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.112",
+			"rdt:elapsedTime": "0.105",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 9,
 			"rdt:startCol": 1,
@@ -74,7 +74,7 @@
 		"rdt:p5": {
 			"rdt:name": "sum_2 <- sum(5, 2)",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.103",
+			"rdt:elapsedTime": "0.094",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 13,
 			"rdt:startCol": 1,
@@ -84,7 +84,7 @@
 		"rdt:p6": {
 			"rdt:name": "divide <- function(a, b) {\n  a / b\n}",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.108",
+			"rdt:elapsedTime": "0.102",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 18,
 			"rdt:startCol": 1,
@@ -94,7 +94,7 @@
 		"rdt:p7": {
 			"rdt:name": "divide_1 <- divide(5, 2)",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.104",
+			"rdt:elapsedTime": "0.097",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 22,
 			"rdt:startCol": 1,
@@ -104,7 +104,7 @@
 		"rdt:p8": {
 			"rdt:name": "divide <- function(a, b) {\n  a / b\n}",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.107",
+			"rdt:elapsedTime": "0.098",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 24,
 			"rdt:startCol": 1,
@@ -114,7 +114,7 @@
 		"rdt:p9": {
 			"rdt:name": "divide_2 <- divide(5, 2)",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.106",
+			"rdt:elapsedTime": "0.094",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 28,
 			"rdt:startCol": 1,
@@ -124,7 +124,7 @@
 		"rdt:p10": {
 			"rdt:name": "uselessFunction <- function() {\n  hello <- 5\n}",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.105",
+			"rdt:elapsedTime": "0.094",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 32,
 			"rdt:startCol": 1,
@@ -134,7 +134,7 @@
 		"rdt:p11": {
 			"rdt:name": "uselessFunction <- function() {\n  hello <- 5\n}",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.103",
+			"rdt:elapsedTime": "0.097",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 36,
 			"rdt:startCol": 1,
@@ -144,7 +144,7 @@
 		"rdt:p12": {
 			"rdt:name": "uselessFunction <- function() {\n  hello <- 5\n}",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.102",
+			"rdt:elapsedTime": "0.095",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 40,
 			"rdt:startCol": 1,
@@ -294,12 +294,12 @@
 			"rdt:langVersion": "R version 4.0.1 (2020-06-06)",
 			"rdt:script": "/Users/rosesheehan/Desktop/CompSci/provSummer/provAnalyzeR/inst/testscripts/functionReassignments.R",
 			"rdt:scriptTimeStamp": "2020-06-21T21.36.23CDT",
-			"rdt:totalElapsedTime": "2.203",
+			"rdt:totalElapsedTime": "2.012",
 			"rdt:sourcedScripts": "",
 			"rdt:sourcedScriptTimeStamps": "",
 			"rdt:workingDirectory": "/Users/rosesheehan/Desktop/CompSci/provSummer/provAnalyzeR/inst",
 			"rdt:provDirectory": "/Users/rosesheehan/Desktop/CompSci/provSummer/provAnalyzeR/inst/testdata/prov_functionReassignments",
-			"rdt:provTimestamp": "2020-06-24T15.05.36CDT",
+			"rdt:provTimestamp": "2020-06-30T09.55.51CDT",
 			"rdt:hashAlgorithm": "md5"
 		},
 

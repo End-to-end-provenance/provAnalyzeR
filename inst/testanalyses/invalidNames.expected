@@ -4,10 +4,24 @@ PRE-EXISTING:
 None
 
 INVALID NAMES:
-Error in analyze.invalid.names() : 
-  object 'invalid.names.present' not found
-Calls: <Anonymous> ... generate.invalid.names.summary -> analyze.invalid.names
-In addition: Warning message:
-Unable to access the following files:
+It is not recommended to use c as an object name. c was first declared on line 2 in script 1.
+It is not recommended to use t as an object name. t was first declared on line 6 in script 1.
+It is not recommended to use T as an object name. T was first declared on line 14 in script 1.
+
+TYPE CHANGES:
+None
+
+FUNCTION REASSIGNMENTS:
+None
+
+/Users/rosesheehan/Desktop/CompSci/provSummer/provAnalyzeR/inst/testscripts/invalidNames.R:14:2: style: Use TRUE instead of the symbol T.
+T <- "false"
+~^
+Warning messages:
+1: Unable to access the following files:
 /Users/rosesheehan/Desktop/CompSci/provSummer/provAnalyzeR/inst/testdata/prov_invalidNames/scripts/invalidNames.R 
-Execution halted
+2: `arrange_()` is deprecated as of dplyr 0.7.0.
+Please use `arrange()` instead.
+See vignette('programming') for more help
+This warning is displayed once every 8 hours.
+Call `lifecycle::last_warnings()` to see where this warning was generated. 

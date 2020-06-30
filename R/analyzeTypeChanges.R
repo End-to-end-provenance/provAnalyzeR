@@ -194,9 +194,11 @@ analyze.type.changes <- function(var = NA)
   # for each data node (row), get required fields for output
   rows <- lapply(c(1:nrow(data.nodes)), function(i)
   {
-    # from data nodes (parameter), extract id, value
+    # from data nodes (parameter), extract id, value, fromEnv
     data.id <- data.nodes$id[i]
     data.value <- data.nodes$value[i]
+    data.from.env <- data.nodes$fromEnv[i]
+    
     
     # get valType columns (remove id column)
     val.type <- provParseR::get.val.type(.analyze.env$prov, node.id = data.id)
@@ -210,10 +212,12 @@ analyze.type.changes <- function(var = NA)
                                          c("name", "scriptNum", "startLine")]
     
     # combine fields
-    fields <- cbind(data.value, proc.fields, val.type, changes[i], stringsAsFactors = FALSE)
+    fields <- cbind(data.value, proc.fields, val.type, changes[i], 
+                    data.from.env, stringsAsFactors = FALSE)
+    
     names(fields) <- c("value", 
                        "code", "scriptNum", "startLine",
-                       "container", "dimension", "type", "changes")
+                       "container", "dimension", "type", "changes", "fromEnv")
     return(fields)
   })
   

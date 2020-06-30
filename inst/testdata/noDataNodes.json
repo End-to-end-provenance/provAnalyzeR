@@ -34,7 +34,7 @@
 		"rdt:p1": {
 			"rdt:name": "noDataNodes.R",
 			"rdt:type": "Start",
-			"rdt:elapsedTime": "1.011",
+			"rdt:elapsedTime": "0.933",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -44,7 +44,7 @@
 		"rdt:p2": {
 			"rdt:name": "library(utils)",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.19",
+			"rdt:elapsedTime": "0.129",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 1,
 			"rdt:startCol": 1,
@@ -54,7 +54,7 @@
 		"rdt:p3": {
 			"rdt:name": "library(testthat)",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.178",
+			"rdt:elapsedTime": "0.176",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 2,
 			"rdt:startCol": 1,
@@ -82,12 +82,12 @@
 			"rdt:langVersion": "R version 4.0.1 (2020-06-06)",
 			"rdt:script": "/Users/rosesheehan/Desktop/CompSci/provSummer/provAnalyzeR/inst/testscripts/noDataNodes.R",
 			"rdt:scriptTimeStamp": "2020-05-28T14.32.49CDT",
-			"rdt:totalElapsedTime": "1.384",
+			"rdt:totalElapsedTime": "1.243",
 			"rdt:sourcedScripts": "",
 			"rdt:sourcedScriptTimeStamps": "",
 			"rdt:workingDirectory": "/Users/rosesheehan/Desktop/CompSci/provSummer/provAnalyzeR/inst",
 			"rdt:provDirectory": "/Users/rosesheehan/Desktop/CompSci/provSummer/provAnalyzeR/inst/testdata/prov_noDataNodes",
-			"rdt:provTimestamp": "2020-06-24T15.03.36CDT",
+			"rdt:provTimestamp": "2020-06-30T09.54.57CDT",
 			"rdt:hashAlgorithm": "md5"
 		},
 

@@ -13,26 +13,26 @@ FUNCTION REASSIGNMENTS:
 The function sum has been reassigned. sum was first declared on line 3 in script 1.
 	1: Script 1, line 9
 		code excerpt:
-		 sum <- function (cc, d) {
+		sum <- function (cc, d) {
 		  cc * d
-		} 
+		}
 The function divide has been reassigned. divide was first declared on line 18 in script 1.
 	1: Script 1, line 24
 		code excerpt:
-		 divide <- function(a, b) {
+		divide <- function(a, b) {
 		  a / b
-		} 
+		}
 The function uselessFunction has been reassigned. uselessFunction was first declared on line 32 in script 1.
 	1: Script 1, line 36
 		code excerpt:
-		 uselessFunction <- function() {
+		uselessFunction <- function() {
 		  hello <- 5
-		} 
+		}
 	2: Script 1, line 40
 		code excerpt:
-		 uselessFunction <- function() {
+		uselessFunction <- function() {
 		  hello <- 5
-		} 
+		}
 
 Warning messages:
 1: Unable to access the following files:

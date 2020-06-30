@@ -40,3 +40,7 @@ s <- new.env()
 s <- function(x) print(x)
 s <- factor(c("red","green","blue","red","green","red"))
 s <- as.POSIXct("080406 10:11", tz = "UTC", format = "%y%m%d %H:%M")
+
+# dimension, container, and type change
+v <- 5
+v <- as.data.frame(matrix(c(1:10), 5))
