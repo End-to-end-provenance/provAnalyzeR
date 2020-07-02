@@ -37,29 +37,16 @@
 #' analyze.type.changes belongs to provAnalyzeR, an analyzer which utilises provenance 
 #' collected during-execution to perform dynamic analysis and identify coding anomalies.
 #'
-#' This function may be used independently after the analyzer has been initialised using
-#' one of its initialisation functions (listed below). Alternatively, it is run by the prov.analyze
-#' functions in order to summarize analysis.
+#' This function is run by the prov.analyze functions. It can be run 
+#' independently by setting the other analysis functions to FALSE in the 
+#' prov.analyze function call. 
 #'
 #' @param var Optional. Variable name(s) to be queried. If not NA, the results will
 #'            be filtered to show only those with the given variable name.
 #'
 #' @return A list of data frames for each variable with at least 1 data type change.
-#'
-#' @seealso provAnalyzeR Initialisation Functions: 
-#' @seealso \code{\link{prov.analyze}}
-#' @seealso \code{\link{prov.analyze.file}} 
-#' @seealso \code{\link{prov.analyze.run}}
-#'
-#'
-#' @examples
-#' \dontrun{
-#' prov.analyze.run("test.R")
-#' analyze.type.changes()
-#' }
-#'
-#' @export
-#' @rdname analyze.type.changes
+#' 
+#' @noRd
 analyze.type.changes <- function(var = NA)
 {
   # case: no provenance
@@ -79,10 +66,6 @@ analyze.type.changes <- function(var = NA)
   vars.names <- unique(vars.names)
   
   # Find all variables with type changes
-  # This functions differs from others that accept queries in that
-  # checking the validity of user's query is done after all variables
-  # with type changes is found.
-  
   remove.indices <- c()
   
   vars <- lapply(c(1:length(vars.names)), function(i)
@@ -94,16 +77,7 @@ analyze.type.changes <- function(var = NA)
       remove.indices <<- append (remove.indices, i)
       return (NULL)
     }
-    
-    # # remove any rows included by coercion functions
-    # nodes <- .remove.coercion.functions(nodes)
-    # 
-    # # check again if there are no type changes
-    # if (nrow(nodes) == 1) {
-    #   remove.indices <<- append (remove.indices, i)
-    #   return (NULL)
-    # }
-    
+
     # number of nodes > 1 (can compare valTypes)
     # keep indices of nodes with type change
     type.changes <- 1 # start with just the first node
@@ -150,31 +124,6 @@ analyze.type.changes <- function(var = NA)
   }
   
   names(vars) <- vars.names
-  
-  # CURRENTLY UNIMPLEMENTED
-  # if the user has specified variable(s) to be queried, get the valid ones
-  # for this function, this process is much simpler than get.valid.var
-  # first, remove repeated user queries
-  # var <- unique(var)
-  # 
-  # if(!(is.na(var[1]) && length(var) == 1)) 
-  # {
-  #   valid.queries <- var[var %in% vars.names]
-  #   
-  #   # no valid variables
-  #   if(length(valid.queries) == 0) {
-  #     cat("No valid variables.\n\n")
-  #     .print.pos.options(vars.names)
-  #     return(invisible(NULL))
-  #   }
-  #   
-  #   # extract queried results from list of all possible type changes
-  #   vars <- lapply(valid.queries, function(query) {
-  #     return(vars[[grep(query, vars.names)]])
-  #   })
-  #   
-  #   names(vars) <- valid.queries
-  # }
   
   return(vars)
 }
@@ -295,49 +244,3 @@ analyze.type.changes <- function(var = NA)
   
   return(changed)
 }
-
-
-# .remove.coercion.functions <- function(nodes) 
-# {
-#   # functions not included, as type changed are expected
-#   coercion.functions <- c("as.string", "as.integer", "as.Date", "as.list", "as.POSIXct")
-#   
-#   remove.indices <- c()
-#   
-#   # for each node, check if the line it changed on has a coercion function in it
-#   lapply(c(1:nrow(nodes)), function(i)
-#   {
-#     # from data nodes (parameter), extract id, value
-#     data.id <- nodes$id[i]
-#     
-#     # print(nodes$id[i])
-#     
-#     # get proc node which either set or first used the data node
-#     proc.id <- .get.p.id(data.id)[1]
-#     # cat("THE PROC ID IS:\n")
-#     # print(proc.id)
-#     
-#     # extract code from the line
-#     code <- .analyze.env$proc.nodes[.analyze.env$proc.nodes$id == proc.id, "name"]
-#     
-#     # check if any of the functions are on this line
-#     if (any(sapply(coercion.functions, grepl, code))) {
-#       # remove this node at the end
-#       remove.indices <<- append (remove.indices, i)
-#     }
-#   })
-#   
-#   # cat("we are outside\n")
-#   # print(length(remove.indices))
-#   # cat("all nodes\n")
-#   # print(nodes)
-#   # cat("remove nodes\n")
-#   # print(nodes[remove.indices, ])
-#   
-#   # remove vars whose type changes occurred by coercion functions
-#   if (length(remove.indices) > 0) {
-#     nodes <- nodes[-remove.indices, ]
-#   }
-# 
-#   return (nodes)
-# }

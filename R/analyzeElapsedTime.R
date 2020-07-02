@@ -81,13 +81,3 @@ analyze.elapsed.time <- function()
   print(fig)
 
 }
-
-# .shorten.line.name <- function(line.name) 
-# {
-#   max.char = 30
-#   
-#   if (nchar(line.name) > max.char) {
-#     line.name <- line.name[:20]
-#   }
-# }
-

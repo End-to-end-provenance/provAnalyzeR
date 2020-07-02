@@ -3,7 +3,6 @@
 export(analyze.elapsed.time)
 export(analyze.function.reassignments)
 export(analyze.invalid.names)
-export(analyze.type.changes)
 export(prov.analyze)
 export(prov.analyze.file)
 export(prov.analyze.run)

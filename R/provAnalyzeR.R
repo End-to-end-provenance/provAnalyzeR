@@ -1,5 +1,5 @@
 # Copyright (C) President and Fellows of Harvard College and
-# Trustees of Mount Holyoke College, 2018.
+# Trustees of Mount Holyoke College, 2020.
 
 # This program is free software: you can redistribute it and/or
 # modify it under the terms of the GNU General Public License as
@@ -15,9 +15,8 @@
 #   License along with this program.  If not, see
 #   <http://www.gnu.org/licenses/>.
 
-library(lintr)
-
 ###############################################################################
+library(lintr)
 
 #' Provenance analysis functions
 #'
@@ -501,6 +500,14 @@ create.markers <- function(changes.list, type) {
   })
 }
 
+#' A helper function tests if a certain type change occurred.
+#'
+#' @param invalid.names The list of any variables in the script with invalid 
+#' names.
+#' 
+#' @return TRUE if change.type occurred, FALSE if not.
+#'         
+#' @noRd
 .are.changes <- function(change.type, changes.value) {
   are.changes <- FALSE
   
@@ -511,6 +518,12 @@ create.markers <- function(changes.list, type) {
   return(are.changes)
 }
 
+#' A helper function that prints output to console in a human-readable format.
+#'
+#' @param invalid.names The list of any variables in the script with invalid 
+#' names.
+#'         
+#' @noRd
 .generate.invalid.names.helper <- function(invalid.names) {
   # loop through each element, printing relevant information
   lapply(c(1:length(invalid.names)), function(i) {

@@ -119,31 +119,6 @@ analyze.function.reassignments <- function(var = NA)
   
   names(vars) <- vars.names
   
-  # CURRENTLY UNIMPLEMENTED
-  # if the user has specified variable(s) to be queried, get the valid ones
-  # for this function, this process is much simpler than get.valid.var
-  # first, remove repeated user queries
-  # var <- unique(var)
-  #
-  # if(!(is.na(var[1]) && length(var) == 1))
-  # {
-  #   valid.queries <- var[var %in% vars.names]
-  # 
-  #   # no valid variables
-  #   if(length(valid.queries) == 0) {
-  #     cat("No valid variables.\n\n")
-  #     .print.pos.options(vars.names)
-  #     return(invisible(NULL))
-  #   }
-  # 
-  #   # extract queried results from list of all possible type changes
-  #   vars <- lapply(valid.queries, function(query) {
-  #     return(vars[[grep(query, vars.names)]])
-  #   })
-  # 
-  #   names(vars) <- valid.queries
-  # }
-  
   return(vars)
 }
 
