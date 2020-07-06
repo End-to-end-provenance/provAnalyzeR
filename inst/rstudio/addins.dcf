@@ -1,0 +1,4 @@
+Name: Analyze current file
+Description: Collect and analyze provenance from open file.
+Binding: prov.analyze.run.addin
+Interactive: false

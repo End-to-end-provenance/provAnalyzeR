@@ -1,0 +1,82 @@
+POTENTIAL ANOMALIES DETECTED for typeChanges.R 
+
+PRE-EXISTING:
+None
+
+INVALID NAMES:
+None
+
+TYPE CHANGES:
+The type of variable d has changed. d was declared on line 12 in script 1.
+	1: Script 1, line 13
+		container changed to: list
+		from:		      vector
+		type changed to: NA
+		from:		 numeric
+		code excerpt: d <- as.list(d) 
+The type of variable e has changed. e was declared on line 16 in script 1.
+	1: Script 1, line 17
+		dimension changed to: 5,20
+		from:		      4,25
+		code excerpt: e <- matrix(c(1:100), 5) 
+The type of variable f has changed. f was declared on line 20 in script 1.
+	1: Script 1, line 21
+		type changed to: integer
+		from:		 numeric
+		code excerpt: f <- as.integer(f) 
+The type of variable g has changed. g was declared on line 24 in script 1.
+	1: Script 1, line 25
+		type changed to: character
+		from:		 numeric
+		code excerpt: g <- "six" 
+	2: Script 1, line 26
+		type changed to: logical
+		from:		 character
+		code excerpt: g <- TRUE 
+The type of variable h has changed. h was declared on line 29 in script 1.
+	1: Script 1, line 31
+		type changed to: character
+		from:		 logical
+		code excerpt: h <- "seven" 
+	2: Script 1, line 33
+		type changed to: integer
+		from:		 character
+		code excerpt: h <- 8L 
+The type of variable s has changed. s was declared on line 38 in script 1.
+	1: Script 1, line 39
+		type changed to: environment
+		from:		 null
+		code excerpt: s <- new.env() 
+	2: Script 1, line 40
+		type changed to: function
+		from:		 environment
+		code excerpt: s <- function(x) print(x) 
+	3: Script 1, line 41
+		type changed to: factor
+		from:		 function
+		code excerpt: s <- factor(c("red","green","blue","red","green ...
+	4: Script 1, line 42
+		type changed to: POSIXct
+		from:		 factor
+		code excerpt: s <- as.POSIXct("080406 10:11", tz = "UTC", for ...
+The type of variable v has changed. v was declared on line 45 in script 1.
+	1: Script 1, line 46
+		container changed to: data_frame
+		from:		      vector
+		dimension changed to: 5,2
+		from:		      1
+		type changed to: integer, integer
+		from:		 numeric
+		code excerpt: v <- as.data.frame(matrix(c(1:10), 5)) 
+
+FUNCTION REASSIGNMENTS:
+None
+
+Warning messages:
+1: Unable to access the following files:
+/Users/rosesheehan/Desktop/CompSci/provSummer/provAnalyzeR/inst/testdata/prov_typeChanges/scripts/typeChanges.R 
+2: `arrange_()` is deprecated as of dplyr 0.7.0.
+Please use `arrange()` instead.
+See vignette('programming') for more help
+This warning is displayed once every 8 hours.
+Call `lifecycle::last_warnings()` to see where this warning was generated. 

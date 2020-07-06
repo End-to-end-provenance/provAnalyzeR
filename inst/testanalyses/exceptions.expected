@@ -1,0 +1,32 @@
+POTENTIAL ANOMALIES DETECTED for exceptions.R 
+
+PRE-EXISTING:
+None
+
+INVALID NAMES:
+None
+
+TYPE CHANGES:
+The type of variable col1 has changed. col1 was declared on line 3 in script 1.
+	1: Script 2, line 1
+		dimension changed to: 10
+		from:		      11
+		code excerpt: if(length(col1) > 10) {
+  col1 <- c(1:10)
+  war ...
+
+FUNCTION REASSIGNMENTS:
+None
+
+Warning messages:
+1: Unable to access the following files:
+/Users/rosesheehan/Desktop/CompSci/provSummer/provAnalyzeR/inst/testdata/prov_exceptions/scripts/exceptions.R
+/Users/rosesheehan/Desktop/CompSci/provSummer/provAnalyzeR/inst/testdata/prov_exceptions/scripts/source_warning.R
+/Users/rosesheehan/Desktop/CompSci/provSummer/provAnalyzeR/inst/testdata/prov_exceptions/scripts/source_error.R 
+2: `arrange_()` is deprecated as of dplyr 0.7.0.
+Please use `arrange()` instead.
+See vignette('programming') for more help
+This warning is displayed once every 8 hours.
+Call `lifecycle::last_warnings()` to see where this warning was generated. 
+3: In readLines(filename) :
+  incomplete final line found on '/Users/rosesheehan/Desktop/CompSci/provSummer/provAnalyzeR/inst/testscripts/exceptions.R'

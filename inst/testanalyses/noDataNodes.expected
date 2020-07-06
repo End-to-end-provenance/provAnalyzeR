@@ -1,0 +1,4 @@
+Error in .analyze.init(prov.file, is.file = TRUE) : 
+  There is no provenance.
+Calls: <Anonymous> -> .analyze.init
+Execution halted

@@ -1,0 +1,44 @@
+POTENTIAL ANOMALIES DETECTED for functionReassignments.R 
+
+PRE-EXISTING:
+None
+
+INVALID NAMES:
+None
+
+TYPE CHANGES:
+None
+
+FUNCTION REASSIGNMENTS:
+The function sum has been reassigned. sum was first declared on line 3 in script 1.
+	1: Script 1, line 9
+		code excerpt:
+		sum <- function (cc, d) {
+		  cc * d
+		}
+The function divide has been reassigned. divide was first declared on line 18 in script 1.
+	1: Script 1, line 24
+		code excerpt:
+		divide <- function(a, b) {
+		  a / b
+		}
+The function uselessFunction has been reassigned. uselessFunction was first declared on line 32 in script 1.
+	1: Script 1, line 36
+		code excerpt:
+		uselessFunction <- function() {
+		  hello <- 5
+		}
+	2: Script 1, line 40
+		code excerpt:
+		uselessFunction <- function() {
+		  hello <- 5
+		}
+
+Warning messages:
+1: Unable to access the following files:
+/Users/rosesheehan/Desktop/CompSci/provSummer/provAnalyzeR/inst/testdata/prov_functionReassignments/scripts/functionReassignments.R 
+2: `arrange_()` is deprecated as of dplyr 0.7.0.
+Please use `arrange()` instead.
+See vignette('programming') for more help
+This warning is displayed once every 8 hours.
+Call `lifecycle::last_warnings()` to see where this warning was generated. 
