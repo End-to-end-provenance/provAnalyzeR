@@ -40,7 +40,7 @@ get.expected <- function()
 json <- system.file("testdata", "invalidNames.json", package = "provAnalyzeR")
 
 provAnalyzeR:::.clear()
-expect_warning(prov.analyze.file(json))   # warning is due to deleted prov folder
+expect_warning(prov.analyze.file(json, lintr=FALSE))   # warning is due to deleted prov folder
 
 expected <- get.expected()
 

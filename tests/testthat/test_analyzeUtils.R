@@ -8,7 +8,7 @@ context("Utility functions")
 test_that("Utility - .clear", 
           {
             json <- system.file("testdata", "exceptions.json", package = "provAnalyzeR")
-            expect_warning(prov.analyze.file(json))   # warning due to deleted prov folder
+            expect_warning(prov.analyze.file(json, lintr=FALSE))   # warning due to deleted prov folder
             
             # ensure .analyze.env has been changed
             expect_false(is.null(provAnalyzeR:::.analyze.env$prov))
@@ -138,7 +138,7 @@ test_that("Utility - .get.p.id",
             json <- system.file("testdata", "preexisting.json", package = "provAnalyzeR")
             
             provAnalyzeR:::.clear()
-            expect_warning(prov.analyze.file(json))   # warning due to deleted prov folder
+            expect_warning(prov.analyze.file(json, lintr=FALSE))   # warning due to deleted prov folder
             
             # Cases
             c1 <- "d4"    # 1 node found (from output edge only)
