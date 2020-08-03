@@ -112,7 +112,7 @@ test_that("analyze.type.changes - no/empty provenance",
             
             # empty provenance
             c0 <- system.file("testdata", "empty.json", package = "provAnalyzeR")
-            expect_error(prov.analyze.file(c0))
+            expect_error(prov.analyze.file(c0, lintr=FALSE))
             expect_false(provAnalyzeR:::.analyze.env$has.graph)
             expect_error(analyze.type.changes())
           })
@@ -125,7 +125,7 @@ test_that("analyze.type.changes - no data nodes",
             json <- system.file("testdata", "noDataNodes.json", package = "provAnalyzeR")
 
             provAnalyzeR:::.clear()
-            expect_warning(prov.analyze.file(json))   # warning is due to deleted prov folder
+            expect_warning(prov.analyze.file(json, lintr=FALSE))   # warning is due to deleted prov folder
 
             c2 <- utils::capture.output(c1 <- analyze.type.changes())
 
@@ -139,7 +139,7 @@ test_that("analyze.type.changes - no variables",
             json <- system.file("testdata", "noVars.json", package = "provAnalyzeR")
 
             provAnalyzeR:::.clear()
-            expect_warning(prov.analyze.file(json))   # warning is due to deleted prov folder
+            expect_warning(prov.analyze.file(json, lintr=FALSE))   # warning is due to deleted prov folder
 
             c2 <- utils::capture.output(c1 <- analyze.type.changes())
 
@@ -151,7 +151,7 @@ test_that("analyze.type.changes - no variables",
 json <- system.file("testdata", "typeChanges.json", package = "provAnalyzeR")
 
 provAnalyzeR:::.clear()
-expect_warning(prov.analyze.file(json))   # warning is due to deleted prov folder
+expect_warning(prov.analyze.file(json, lintr=FALSE))   # warning is due to deleted prov folder
 
 expected <- get.expected()
 

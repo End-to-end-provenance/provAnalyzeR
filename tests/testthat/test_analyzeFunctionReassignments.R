@@ -51,7 +51,12 @@ test_that("analyze.function.reassignments - no/empty provenance",
             
             # empty provenance
             c0 <- system.file("testdata", "empty.json", package = "provAnalyzeR")
-            expect_error(prov.analyze.file(c0))
+            
+            # Need to turn the lintr off because it will look for the 
+            # script in the directory specified in the provenance, which 
+            # is an absolute path and won't be found on the computer
+            # where the test is run.
+            expect_error(prov.analyze.file(c0, lintr=FALSE))
             expect_false(provAnalyzeR:::.analyze.env$has.graph)
             expect_error(analyze.function.reassignments())
           })
@@ -64,7 +69,7 @@ test_that("analyze.function.reassignments - no data nodes",
             json <- system.file("testdata", "noDataNodes.json", package = "provAnalyzeR")
             
             provAnalyzeR:::.clear()
-            expect_warning(prov.analyze.file(json))   # warning is due to deleted prov folder
+            expect_warning(prov.analyze.file(json, lintr=FALSE))   # warning is due to deleted prov folder
             
             c2 <- utils::capture.output(c1 <- analyze.function.reassignments())
             
@@ -78,7 +83,7 @@ test_that("analyze.function.reassignments - no variables",
             json <- system.file("testdata", "noVars.json", package = "provAnalyzeR")
             
             provAnalyzeR:::.clear()
-            expect_warning(prov.analyze.file(json))   # warning is due to deleted prov folder
+            expect_warning(prov.analyze.file(json, lintr=FALSE))   # warning is due to deleted prov folder
             
             c2 <- utils::capture.output(c1 <- analyze.function.reassignments())
             
@@ -91,7 +96,7 @@ test_that("analyze.function.reassignments - no variables",
 json <- system.file("testdata", "functionReassignments.json", package = "provAnalyzeR")
 
 provAnalyzeR:::.clear()
-expect_warning(prov.analyze.file(json))   # warning is due to deleted prov folder
+expect_warning(prov.analyze.file(json, lintr=FALSE))   # warning is due to deleted prov folder
 
 expected <- get.expected()
 
